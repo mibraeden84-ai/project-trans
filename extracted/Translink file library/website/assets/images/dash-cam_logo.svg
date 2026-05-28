@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 180" role="img" aria-label="Dash Cam">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f8fbff"/>
+      <stop offset="1" stop-color="#eef4fb"/>
+    </linearGradient>
+    <linearGradient id="camBody" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#5f4b8b"/>
+      <stop offset="1" stop-color="#3a2f5f"/>
+    </linearGradient>
+    <linearGradient id="lens" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6f5aa0"/>
+      <stop offset="1" stop-color="#2e2246"/>
+    </linearGradient>
+    <linearGradient id="videoWing" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6a4f90"/>
+      <stop offset="1" stop-color="#423067"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="0" y="0" width="240" height="180" fill="url(#bg)"/>
+
+  <rect x="78" y="46" width="90" height="72" rx="14" fill="url(#camBody)"/>
+  <circle cx="96" cy="39" r="6" fill="#2e2246"/>
+  <circle cx="150" cy="39" r="6" fill="#2e2246"/>
+  <circle cx="105" cy="62" r="23" fill="url(#lens)"/>
+  <circle cx="141" cy="62" r="23" fill="url(#lens)"/>
+  <circle cx="105" cy="62" r="6" fill="#f4ecff" opacity="0.9"/>
+  <circle cx="141" cy="62" r="6" fill="#f4ecff" opacity="0.9"/>
+
+  <rect x="86" y="93" width="55" height="20" rx="5" fill="#4e3b78"/>
+  <circle cx="95" cy="103" r="4" fill="#ff4d79"/>
+  <rect x="104" y="100" width="26" height="5" rx="2.5" fill="#b8a8db"/>
+
+  <polygon points="170,70 213,52 213,112 170,94" fill="url(#videoWing)"/>
+  <rect x="172" y="63" width="7" height="39" rx="3.5" fill="#2f2349"/>
+
+  <text x="120" y="156" text-anchor="middle" fill="#323a44" font-size="34" font-family="Segoe UI, Arial, sans-serif" font-weight="700">Dash Cam</text>
+</svg>

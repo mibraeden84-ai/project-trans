@@ -1,0 +1,19 @@
+🌍 GALILEOSKY — Translink GPS Configs
+======================================
+All GalileoSky device configurations and firmware.
+
+AVAILABLE CONFIGS:
+------------------
+1. Base Config    → GalileoSky_BaseConfig_v1.cfg
+2. Server Setup   → GalileoSky_ServerConfig_v2.cfg
+3. V7 Model       → GalileoSky_V7_Config_v1.cfg
+
+FIRMWARE UPDATES (drop .fw files into Firmware/ folder):
+-------------------------------------------------------
+- Latest firmware files go in Firmware/
+
+MANUALS:
+--------
+- PDF datasheets and guides in Manuals/
+
+Server: 88.99.188.166:2050 | APN: internet.et

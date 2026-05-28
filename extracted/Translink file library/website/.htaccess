@@ -1,0 +1,15 @@
+RewriteEngine On
+
+# API routes — route all /api/* requests to API entry point
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^api/(.*)$ api/index.php [QSA,L]
+
+# If .htaccess is being used with Apache (not PHP built-in server),
+# also handle the root-level /api path:
+RewriteRule ^api$ api/index.php [QSA,L]
+
+# Existing: route all other requests through index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?page=$1 [QSA,L]

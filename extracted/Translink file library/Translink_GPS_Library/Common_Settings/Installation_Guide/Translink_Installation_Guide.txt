@@ -1,0 +1,15 @@
+Translink GPS Device Installation Guide
+========================================
+1. Select mounting location (dashboard or windshield)
+2. Clean surface and attach bracket
+3. Insert SIM card (PIN disabled)
+4. Connect power (12-24V DC)
+5. Wait for GPS and GSM LED indicators
+6. Verify connection to server (88.99.188.166:2050)
+7. Test tracking via Translink platform
+8. Secure all cables and finalize mounting
+
+Troubleshooting:
+- Red LED blinking: No GSM signal
+- Green LED blinking: GPS fix acquired
+- Blue LED: Data transmission active

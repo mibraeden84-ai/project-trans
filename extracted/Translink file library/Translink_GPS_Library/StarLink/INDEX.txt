@@ -1,0 +1,19 @@
+⭐ STARLINK — Translink GPS Configs
+====================================
+All StarLink device configurations and firmware.
+
+AVAILABLE CONFIGS:
+------------------
+1. Base Config      → StarLink_BaseConfig_v1.cfg
+2. APN Settings     → StarLink_APN_Default_v1.cfg
+3. Advanced Config  → StarLink_AdvancedConfig_v1.cfg
+
+FIRMWARE UPDATES (drop .fw files into Firmware/ folder):
+-------------------------------------------------------
+- Latest firmware files go in Firmware/
+
+MANUALS:
+--------
+- PDF datasheets and guides in Manuals/
+
+Server: 88.99.188.166:2050 | APN: internet.et

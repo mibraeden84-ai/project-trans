@@ -1,0 +1,23 @@
+📡 TELTONIKA — Translink GPS Configs
+=====================================
+All Teltonika device configurations and firmware.
+
+AVAILABLE CONFIGS (drag and drop to device):
+--------------------------------------------
+1. FMB920    → FMB920_Translink_Default_v1.cfg
+2. FMC920    → FMC920_Translink_Default_v1.cfg
+3. FMB130    → FMB130_Translink_Default_v1.cfg
+4. FMB125    → FMB125_Translink_Default_v1.cfg
+5. FMB140    → FMB140_Translink_Default_v1.cfg
+6. FMC150    → FMC150_Translink_Default_v1.cfg
+
+FIRMWARE UPDATES (drop .fw files into Firmware/ folder):
+-------------------------------------------------------
+- Latest firmware files go in Firmware/
+- Check version before updating
+
+MANUALS:
+--------
+- PDF datasheets and guides in Manuals/
+
+Server: 88.99.188.166:2050 | APN: internet.et

@@ -1,0 +1,9 @@
+Translink SIM Setup Guide
+=========================
+1. Use a standard 2G/3G/4G SIM card
+2. Recommended provider: Ethio Telecom
+3. APN: internet.et
+4. Ensure data is enabled on the SIM
+5. Disable PIN lock on the SIM before installation
+6. Insert SIM into the GPS device and power on
+7. Verify network registration via LED indicator

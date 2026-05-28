@@ -1,0 +1,24 @@
+# OS
+Thumbs.db
+.DS_Store
+
+# Logs
+*.log
+
+# PHP
+config.php
+
+# Uploads (keep structure, not files)
+extracted/Translink file library/website/uploads/*
+!extracted/Translink file library/website/uploads/configs/*.cfg
+!extracted/Translink file library/website/uploads/configs/*.txt
+!extracted/Translink file library/website/uploads/firmware/*.txt
+!extracted/Translink file library/website/uploads/manuals/*.txt
+
+# Temp
+extracted/Translink file library/website/tmp/*
+extracted/Translink file library/website/tmp_cookie.txt
+extracted/Translink file library/website/tmp_cookie2.txt
+
+# Allow config.php (needed for running)
+!extracted/Translink file library/website/config.php
