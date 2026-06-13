@@ -2434,6 +2434,7 @@ if (isAdmin()) {
                             }
 
                             if (xhr.status >= 200 && xhr.status < 300 && data && data.success) {
+                                setUploadBusy(false);
                                 setUploadProgress(100, 'Published to user library');
                                 setUploadStatus(data.message || 'Upload complete.', false);
                                 if (typeof showToast === 'function') showToast(data.message || 'Upload complete.', 'success', 3200);
