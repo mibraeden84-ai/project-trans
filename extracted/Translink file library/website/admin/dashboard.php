@@ -3373,7 +3373,6 @@ if (isAdmin()) {
         }
 
         function showTab(tabName) {
-            alert('DEBUG: showTab called with: ' + tabName);
             setTimeout(function() {
                 var tabs = document.querySelectorAll('.tab-content');
                 var btns = document.querySelectorAll('.tab-btn');
@@ -3500,6 +3499,9 @@ if (isAdmin()) {
             applyAdminSearch();
         })();
 
+        // Make showTab globally accessible for onclick handlers
+        window.showTab = showTab;
+
         // === FILE RENAME MODAL ===
         function openRenameModal(btn) {
             var type = btn.getAttribute('data-edit-type');
@@ -3549,12 +3551,53 @@ if (isAdmin()) {
                 .catch(function() { alert('Save failed. Please refresh and try again.'); });
         }
 
-        var dashRangeFrom = '';
-        var dashRangeTo = '';
+        var dashRangeFrom = '<?= escape($reportFrom) ?>';
+        var dashRangeTo = '<?= escape($reportTo) ?>';
 
         (function initDashboardLiveRangeRefresh() {
             var rangeTotalEl = document.getElementById('rangeDownloadsValue');
             if (!rangeTotalEl) { window.setDateRange = function(){}; window.toggleCustomDate = function(){}; window.applyCustomDate = function(){}; return; }
+
+            // Initialize button state and range label on page load
+            function initDateRangeState() {
+                var now = new Date();
+                var todayStr = now.getFullYear() + '-' + String(now.getMonth()+1).padStart(2,'0') + '-' + String(now.getDate()).padStart(2,'0');
+
+                // Determine which preset matches the current range
+                var activePreset = 'custom';
+                if (dashRangeFrom === todayStr && dashRangeTo === todayStr) {
+                    activePreset = 'today';
+                } else {
+                    var d7 = new Date(now); d7.setDate(d7.getDate() - 6);
+                    var d7Str = d7.getFullYear() + '-' + String(d7.getMonth()+1).padStart(2,'0') + '-' + String(d7.getDate()).padStart(2,'0');
+                    if (dashRangeFrom === d7Str && dashRangeTo === todayStr) {
+                        activePreset = '7d';
+                    } else {
+                        var d30 = new Date(now); d30.setDate(d30.getDate() - 29);
+                        var d30Str = d30.getFullYear() + '-' + String(d30.getMonth()+1).padStart(2,'0') + '-' + String(d30.getDate()).padStart(2,'0');
+                        if (dashRangeFrom === d30Str && dashRangeTo === todayStr) {
+                            activePreset = '30d';
+                        }
+                    }
+                }
+
+                // Highlight the correct button
+                document.querySelectorAll('.date-quick-btn').forEach(function(b){
+                    b.classList.toggle('active', b.getAttribute('data-range') === activePreset);
+                });
+
+                // Update range label
+                var rangeEl = document.getElementById('dashboardRangeLabel');
+                if (rangeEl) {
+                    var labels = { 'today':'Today', '7d':'Last 7 Days', '30d':'Last 30 Days' };
+                    if (activePreset !== 'custom') {
+                        rangeEl.textContent = 'Range: ' + (labels[activePreset] || activePreset);
+                    } else {
+                        rangeEl.textContent = 'Range: ' + (dashRangeFrom || '?') + ' - ' + (dashRangeTo || '?');
+                    }
+                }
+            }
+            initDateRangeState();
 
             var pollMs = 30000;
             var inFlight = false;
@@ -3641,7 +3684,7 @@ if (isAdmin()) {
                 }
             }
 
-            function             function applyCustomDate() {
+            function applyCustomDate() {
                 var f = document.getElementById('customFrom');
                 var t = document.getElementById('customTo');
                 if (f && f.value) dashRangeFrom = f.value;
@@ -3805,6 +3848,11 @@ if (isAdmin()) {
 
             refreshDashboardLive();
             startTimer();
+
+            // Make functions globally accessible for onclick handlers
+            window.setDateRange = setDateRange;
+            window.toggleCustomDate = toggleCustomDate;
+            window.applyCustomDate = applyCustomDate;
         })();
     </script>
 
