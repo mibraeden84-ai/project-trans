@@ -3374,7 +3374,7 @@ if (isAdmin()) {
 
         function showTab(tabName) {
             var nextTab = document.getElementById('tab-' + tabName);
-            if (!nextTab) { alert('Tab element not found: tab-' + tabName); return false; }
+            if (!nextTab) { return false; }
             var allTabs = document.querySelectorAll('.tab-content');
             for (var i = 0; i < allTabs.length; i++) { allTabs[i].style.display = 'none'; allTabs[i].classList.remove('active'); }
             var allBtns = document.querySelectorAll('.tab-btn');
