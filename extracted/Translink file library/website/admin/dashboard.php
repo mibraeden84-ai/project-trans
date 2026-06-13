@@ -3374,16 +3374,21 @@ if (isAdmin()) {
 
         function showTab(tabName) {
             var nextTab = document.getElementById('tab-' + tabName);
-            if (!nextTab) return false;
-            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            document.querySelectorAll('.sidebar a').forEach(a => a.classList.remove('active'));
+            if (!nextTab) { console.warn('Tab not found:', tabName); return false; }
+            document.querySelectorAll('.tab-content').forEach(function(t) { t.style.display = 'none'; t.classList.remove('active'); });
+            document.querySelectorAll('.tab-btn').forEach(function(b) { b.classList.remove('active'); });
+            document.querySelectorAll('.sidebar a').forEach(function(a) { a.classList.remove('active'); });
+            nextTab.style.display = 'block';
             nextTab.classList.add('active');
-            const btn = document.querySelector(`.tab-btn[onclick*="'${tabName}'"]`);
-            if (btn) btn.classList.add('active');
-            const nav = document.querySelector(`.sidebar a[onclick*="'${tabName}'"]`);
-            if (nav) nav.classList.add('active');
-            location.hash = tabName;
+            document.querySelectorAll('.tab-btn').forEach(function(b) {
+                var oc = b.getAttribute('onclick') || '';
+                if (oc.indexOf("'" + tabName + "'") !== -1) b.classList.add('active');
+            });
+            document.querySelectorAll('.sidebar a').forEach(function(a) {
+                var oc = a.getAttribute('onclick') || '';
+                if (oc.indexOf("'" + tabName + "'") !== -1) a.classList.add('active');
+            });
+            try { location.hash = tabName; } catch(e) {}
             updateAdminPageTitle(tabName);
             applyAdminSearch();
             closeAdminMobileNav();
@@ -3540,9 +3545,12 @@ if (isAdmin()) {
                 .catch(function() { alert('Save failed. Please refresh and try again.'); });
         }
 
+        var dashRangeFrom = '';
+        var dashRangeTo = '';
+
         (function initDashboardLiveRangeRefresh() {
             var rangeTotalEl = document.getElementById('rangeDownloadsValue');
-            if (!rangeTotalEl) return;
+            if (!rangeTotalEl) { window.setDateRange = function(){}; window.toggleCustomDate = function(){}; window.applyCustomDate = function(){}; return; }
 
             var pollMs = 30000;
             var inFlight = false;
@@ -3582,9 +3590,6 @@ if (isAdmin()) {
                 var safeNumber = parseInt(value, 10);
                 el.textContent = Number.isFinite(safeNumber) ? String(Math.max(0, safeNumber)) : '0';
             }
-
-            var dashRangeFrom = '';
-            var dashRangeTo = '';
 
             function buildRequestParams() {
                 var params = new URLSearchParams();
