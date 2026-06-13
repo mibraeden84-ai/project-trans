@@ -6,6 +6,9 @@ RUN a2enmod rewrite headers
 # Allow .htaccess overrides under /var/www/html
 RUN sed -i 's/AllowOverride[[:space:]]\\+None/AllowOverride All/g' /etc/apache2/apache2.conf
 
+# Install PostgreSQL dev headers for pdo_pgsql
+RUN apt-get update && apt-get install -y libpq-dev && rm -rf /var/lib/apt/lists/*
+
 # PDO + PostgreSQL driver
 RUN docker-php-ext-install pdo pdo_pgsql
 
