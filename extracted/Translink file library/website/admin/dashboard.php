@@ -1168,6 +1168,13 @@ if (isset($_GET['ajax']) && (string)($_GET['ajax'] ?? '') === 'dashboard_live') 
         exit;
     }
 
+    $ajaxRangeFrom = trim((string)($_GET['range_from'] ?? ''));
+    $ajaxRangeTo = trim((string)($_GET['range_to'] ?? ''));
+    $ajaxDashboardRange = normalizeDashboardDateRange($ajaxRangeFrom, $ajaxRangeTo);
+    $ajaxRangeStart = $ajaxDashboardRange['start'];
+    $ajaxRangeEnd = $ajaxDashboardRange['end'];
+    $ajaxRangeLabel = $ajaxDashboardRange['label'];
+
     $liveStats = [
         'brands' => (int)($db->fetchOne("SELECT COUNT(*) as c FROM brands")['c'] ?? 0),
         'models' => (int)($db->fetchOne("SELECT COUNT(*) as c FROM device_models")['c'] ?? 0),
@@ -1178,20 +1185,20 @@ if (isset($_GET['ajax']) && (string)($_GET['ajax'] ?? '') === 'dashboard_live') 
         'users' => (int)($db->fetchOne("SELECT COUNT(*) as c FROM users")['c'] ?? 0),
     ];
     $liveStats['total_files'] = $liveStats['configs'] + $liveStats['firmware'] + $liveStats['manuals'] + $liveStats['software'];
-    $liveTodayStats = [
-        'configs' => (int)($db->fetchOne("SELECT COUNT(*) as c FROM config_files WHERE status = 'active' AND created_at >= ? AND created_at <= ?", [$todayStart, $todayEnd])['c'] ?? 0),
-        'firmware' => (int)($db->fetchOne("SELECT COUNT(*) as c FROM firmware_files WHERE status = 'active' AND created_at >= ? AND created_at <= ?", [$todayStart, $todayEnd])['c'] ?? 0),
-        'manuals' => (int)($db->fetchOne("SELECT COUNT(*) as c FROM manuals WHERE status = 'active' AND created_at >= ? AND created_at <= ?", [$todayStart, $todayEnd])['c'] ?? 0),
-        'software' => (int)($db->fetchOne("SELECT COUNT(*) as c FROM software_files WHERE status = 'active' AND created_at >= ? AND created_at <= ?", [$todayStart, $todayEnd])['c'] ?? 0),
+    $liveRangeStats = [
+        'configs' => (int)($db->fetchOne("SELECT COUNT(*) as c FROM config_files WHERE status = 'active' AND created_at >= ? AND created_at <= ?", [$ajaxRangeStart, $ajaxRangeEnd])['c'] ?? 0),
+        'firmware' => (int)($db->fetchOne("SELECT COUNT(*) as c FROM firmware_files WHERE status = 'active' AND created_at >= ? AND created_at <= ?", [$ajaxRangeStart, $ajaxRangeEnd])['c'] ?? 0),
+        'manuals' => (int)($db->fetchOne("SELECT COUNT(*) as c FROM manuals WHERE status = 'active' AND created_at >= ? AND created_at <= ?", [$ajaxRangeStart, $ajaxRangeEnd])['c'] ?? 0),
+        'software' => (int)($db->fetchOne("SELECT COUNT(*) as c FROM software_files WHERE status = 'active' AND created_at >= ? AND created_at <= ?", [$ajaxRangeStart, $ajaxRangeEnd])['c'] ?? 0),
     ];
-    $liveTodayTotal = $liveTodayStats['configs'] + $liveTodayStats['firmware'] + $liveTodayStats['manuals'] + $liveTodayStats['software'];
-    $liveTodaySafe = max(1, $liveTodayTotal);
-    $liveTodayMix = [
-        ['label' => 'Configs', 'count' => $liveTodayStats['configs'], 'percent' => round(($liveTodayStats['configs'] / $liveTodaySafe) * 100)],
-        ['label' => 'Firmware', 'count' => $liveTodayStats['firmware'], 'percent' => round(($liveTodayStats['firmware'] / $liveTodaySafe) * 100)],
-        ['label' => 'Manuals', 'count' => $liveTodayStats['manuals'], 'percent' => round(($liveTodayStats['manuals'] / $liveTodaySafe) * 100)],
-        ['label' => 'Software', 'count' => $liveTodayStats['software'], 'percent' => round(($liveTodayStats['software'] / $liveTodaySafe) * 100)],
-        ['label' => "Today's Total", 'count' => $liveTodayTotal, 'percent' => 100],
+    $liveRangeTotal = $liveRangeStats['configs'] + $liveRangeStats['firmware'] + $liveRangeStats['manuals'] + $liveRangeStats['software'];
+    $liveRangeSafe = max(1, $liveRangeTotal);
+    $liveMix = [
+        ['label' => 'Configs', 'count' => $liveRangeStats['configs'], 'percent' => round(($liveRangeStats['configs'] / $liveRangeSafe) * 100)],
+        ['label' => 'Firmware', 'count' => $liveRangeStats['firmware'], 'percent' => round(($liveRangeStats['firmware'] / $liveRangeSafe) * 100)],
+        ['label' => 'Manuals', 'count' => $liveRangeStats['manuals'], 'percent' => round(($liveRangeStats['manuals'] / $liveRangeSafe) * 100)],
+        ['label' => 'Software', 'count' => $liveRangeStats['software'], 'percent' => round(($liveRangeStats['software'] / $liveRangeSafe) * 100)],
+        ['label' => 'Total In Range', 'count' => $liveRangeTotal, 'percent' => 100],
     ];
 
     $usageColumnsReady = ensureUserUsageColumns();
@@ -1232,17 +1239,17 @@ if (isset($_GET['ajax']) && (string)($_GET['ajax'] ?? '') === 'dashboard_live') 
         'generated_at' => date('c'),
         'generated_label' => nowUsEtLabel('h:i:s A'),
         'range' => [
-            'from' => $reportFrom,
-            'to' => $reportTo,
-            'label' => $reportRangeLabel,
+            'from' => $ajaxDashboardRange['from'],
+            'to' => $ajaxDashboardRange['to'],
+            'label' => $ajaxRangeLabel,
         ],
         'downloads' => [
             'total' => (int)($downloadRangeStats['total'] ?? 0),
             'users' => (int)($downloadRangeStats['users'] ?? 0),
         ],
         'stats' => $liveStats,
-        'today_mix' => $liveTodayMix,
-        'today_total' => $liveTodayTotal,
+        'range_mix' => $liveMix,
+        'range_total' => $liveRangeTotal,
         'events_ready' => $downloadEventsReady,
         'recent_downloads' => $recentDownloadPayload,
         'users' => $liveUserPayload,
@@ -1527,11 +1534,24 @@ if (isAdmin()) {
         .dashboard-hero { display:flex; align-items:center; justify-content:space-between; gap:10px; border:1px solid #dbe8f5; border-radius:12px; background:#ffffff; padding:10px 12px; margin-bottom:14px; box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05); }
         .dashboard-hero strong { font-size:0.9rem; color:#123a63; }
         .dashboard-hero span { color:#64748b; font-size:0.8rem; }
-        .dashboard-date-filter { display:flex; align-items:flex-end; gap:8px; flex-wrap:wrap; margin-bottom:12px; padding:10px 12px; border:1px solid #dbe8f5; border-radius:12px; background:#fff; box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05); }
-        .dashboard-date-filter label { font-size:0.74rem; color:#475467; font-weight:700; display:flex; flex-direction:column; gap:4px; }
-        .dashboard-date-filter input[type="date"] { min-width:150px; padding:8px 10px; border:1px solid #cfe0f1; border-radius:8px; font-size:0.82rem; background:#fbfdff; }
-        .dashboard-date-filter .date-meta { color:#64748b; font-size:0.78rem; margin-right:auto; }
-        .dashboard-date-filter .dashboard-live-status { margin-right:0; margin-left:auto; font-weight:700; color:#0b63aa; background:#eef6ff; border:1px solid #cfe1f7; border-radius:999px; padding:4px 10px; }
+        .dashboard-date-filter { margin-bottom:12px; padding:10px 12px; border:1px solid #dbe8f5; border-radius:12px; background:#fff; box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05); }
+        .dashboard-date-quick { display:flex; gap:4px; flex-wrap:wrap; margin-bottom:6px; }
+        .date-quick-btn { padding:5px 14px; border:1px solid #cbdcec; border-radius:999px; background:#fff; color:#475467; font-size:0.78rem; cursor:pointer; transition:all 0.15s; font-family:inherit; }
+        .date-quick-btn:hover { background:#f0f6ff; border-color:#9fc0e1; }
+        .date-quick-btn.active { background:#005aa0; color:#fff; border-color:#005aa0; }
+        .dashboard-date-custom { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:6px; padding:8px 0; border-top:1px solid #e4edf7; }
+        .dashboard-date-custom label { font-size:0.78rem; color:#475467; display:flex; align-items:center; gap:6px; }
+        .dashboard-date-custom input[type="date"] { border:1px solid #cbdcec; padding:5px 8px; border-radius:6px; font-size:0.82rem; font-family:inherit; color:#1f2a37; background:#fff; }
+        .dashboard-date-custom .btn { padding:5px 12px; font-size:0.76rem; }
+        .dashboard-date-meta-row { display:flex; align-items:center; gap:12px; flex-wrap:wrap; font-size:0.75rem; color:#64748b; }
+        .dashboard-date-meta-row .date-meta + .date-meta { margin-left:auto; }
+        .dashboard-live-status { font-weight:700; color:#0b63aa; background:#eef6ff; border:1px solid #cfe1f7; border-radius:999px; padding:4px 10px; }
+        .widget-loading { opacity:0.5; transition:opacity 0.2s; pointer-events:none; }
+        .widget-refreshing > .mix-row, .widget-refreshing > .download-feed-wrap { opacity:0.3; transition:opacity 0.2s; }
+        .dash-empty-state { text-align:center; padding:20px 12px; color:#94a3b8; font-size:0.82rem; }
+        .dash-empty-state i { font-size:1.5rem; display:block; margin-bottom:6px; color:#cbd5e1; }
+        .dash-fade-up { animation:dashFadeUp 0.4s ease; }
+        @keyframes dashFadeUp { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:translateY(0); } }
         .dashboard-range-kpis { display:grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap:10px; margin-bottom:14px; }
         .dashboard-range-kpi { border:1px solid #d6e4f3; border-radius:12px; background:#fff; padding:11px 12px; box-shadow: 0 8px 20px rgba(15, 23, 42, 0.05); }
         .dashboard-range-kpi strong { font-size:1.4rem; color:#0b3f70; line-height:1; display:block; }
@@ -1685,8 +1705,8 @@ if (isAdmin()) {
             .dashboard-actions .btn { flex: 1; justify-content: center; }
             .dashboard-kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
             .dashboard-range-kpis { grid-template-columns: 1fr; }
-            .dashboard-date-filter .date-meta { width: 100%; margin-right: 0; }
-            .dashboard-date-filter .dashboard-live-status { margin-left: 0; }
+            .dashboard-date-meta-row { flex-direction:column; align-items:flex-start; gap:4px; }
+            .dashboard-date-meta-row .date-meta + .date-meta { margin-left:0; }
             .upload-dropzone { align-items:flex-start; flex-direction:column; }
             .upload-dropzone-browse { width:100%; text-align:center; }
         }
@@ -1872,18 +1892,23 @@ if (isAdmin()) {
                         <span>Live totals across files, brands, models, and users</span>
                     </div>
                 </div>
-                <form method="GET" action="dashboard.php#dashboard" class="dashboard-date-filter" id="dashboardDateFilterForm">
-                    <label>From
-                        <input type="date" name="report_from" value="<?= escape($reportFrom) ?>">
-                    </label>
-                    <label>To
-                        <input type="date" name="report_to" value="<?= escape($reportTo) ?>">
-                    </label>
-                    <button type="submit" class="btn btn-primary"><i class="fas fa-calendar-check"></i> Apply</button>
-                    <a href="dashboard.php#dashboard" class="btn"><i class="fas fa-rotate-left"></i> Reset</a>
-                    <span class="date-meta" id="dashboardRangeLabel" data-range-label-prefix="Range: ">Range: <?= escape($reportRangeLabel) ?></span>
-                    <span class="date-meta dashboard-live-status" id="dashboardLiveStatus">Live updates every 10s (USA ET)</span>
-                </form>
+                <div class="dashboard-date-filter" id="dashboardDateFilterWrap">
+                    <div class="dashboard-date-quick">
+                        <button type="button" class="date-quick-btn active" data-range="today" onclick="setDateRange('today')">Today</button>
+                        <button type="button" class="date-quick-btn" data-range="7d" onclick="setDateRange('7d')">Last 7 Days</button>
+                        <button type="button" class="date-quick-btn" data-range="30d" onclick="setDateRange('30d')">Last 30 Days</button>
+                        <button type="button" class="date-quick-btn" data-range="custom" onclick="toggleCustomDate()">Custom</button>
+                    </div>
+                    <div class="dashboard-date-custom" id="dashboardDateCustom" style="display:none">
+                        <label>From <input type="date" id="customFrom" value="<?= escape($reportFrom) ?>"></label>
+                        <label>To <input type="date" id="customTo" value="<?= escape($reportTo) ?>"></label>
+                        <button type="button" class="btn btn-primary" onclick="applyCustomDate()"><i class="fas fa-calendar-check"></i> Apply</button>
+                    </div>
+                    <div class="dashboard-date-meta-row">
+                        <span class="date-meta" id="dashboardRangeLabel" data-range-label-prefix="Range: ">Range: <?= escape($reportRangeLabel) ?></span>
+                        <span class="date-meta dashboard-live-status" id="dashboardLiveStatus">Live every 30s <span id="dashTimeLabel">(EAT)</span></span>
+                    </div>
+                </div>
                 <div class="dashboard-range-kpis">
                     <div class="dashboard-range-kpi">
                         <strong id="rangeDownloadsValue"><?= (int)($downloadRangeStats['total'] ?? 0) ?></strong>
@@ -1938,13 +1963,13 @@ if (isAdmin()) {
                     </div>
                 </div>
                 <div class="dashboard-insights">
-                    <div class="mix-card">
-                        <h3><i class="fas fa-chart-pie"></i> File Distribution <span style="font-size:0.75rem;font-weight:400;color:#64748b;margin-left:8px" id="todayMixLabel">(Today)</span></h3>
-                        <div style="display:flex;gap:4px;margin-bottom:12px;flex-wrap:wrap">
-                            <button class="mix-toggle-btn active" data-mix="today" onclick="switchMixView('today')">Today</button>
-                            <button class="mix-toggle-btn" data-mix="all" onclick="switchMixView('all')">All Time</button>
-                        </div>
-                        <div id="todayMixView">
+                    <div class="mix-card" id="fileDistributionCard">
+                        <h3><i class="fas fa-chart-pie"></i> File Distribution <span style="font-size:0.75rem;font-weight:400;color:#64748b;margin-left:8px" id="rangeMixLabel">(<?= escape($reportRangeLabel) ?>)</span></h3>
+                        <div id="rangeMixView">
+                        <?php $mixEmpty = array_sum(array_column($todayMix, 'count')) === 0; ?>
+                        <?php if ($mixEmpty): ?>
+                        <div class="dash-empty-state"><i class="fas fa-inbox"></i>No files uploaded in this period.</div>
+                        <?php else: ?>
                         <?php foreach ($todayMix as $mix): ?>
                         <div class="mix-row">
                             <div class="mix-row-meta">
@@ -1954,17 +1979,7 @@ if (isAdmin()) {
                             <div class="mix-track"><div class="mix-fill" style="width: <?= (int)$mix['percent'] ?>%"></div></div>
                         </div>
                         <?php endforeach; ?>
-                        </div>
-                        <div id="allMixView" style="display:none">
-                        <?php foreach ($fileMix as $mix): ?>
-                        <div class="mix-row">
-                            <div class="mix-row-meta">
-                                <span><?= escape($mix['label']) ?></span>
-                                <span><?= (int)$mix['count'] ?> (<?= (int)$mix['percent'] ?>%)</span>
-                            </div>
-                            <div class="mix-track"><div class="mix-fill" style="width: <?= (int)$mix['percent'] ?>%"></div></div>
-                        </div>
-                        <?php endforeach; ?>
+                        <?php endif; ?>
                         </div>
                     </div>
                     <div class="mix-card">
@@ -1986,13 +2001,13 @@ if (isAdmin()) {
                             <div class="mix-track"><div class="mix-fill" id="rangeDownloadsMixFill" style="width: <?= min(100, (int)($downloadRangeStats['total'] ?? 0)) ?>%"></div></div>
                         </div>
                     </div>
-                    <div class="mix-card">
-                        <h3><i class="fas fa-download"></i> Recent User Downloads</h3>
+                    <div class="mix-card" id="recentDownloadsCard">
+                        <h3><i class="fas fa-download"></i> Recent User Downloads <span style="font-size:0.7rem;font-weight:400;color:#94a3b8" id="downloadsLastUpdated"></span></h3>
                         <div id="adminRecentDownloadsFeed" class="download-feed-wrap" data-events-ready="<?= $downloadEventsReady ? '1' : '0' ?>">
                         <?php if (!$downloadEventsReady): ?>
-                            <div class="empty">Download events are unavailable.</div>
+                            <div class="dash-empty-state"><i class="fas fa-database"></i>Download events table unavailable.</div>
                         <?php elseif (empty($recentDownloadEvents)): ?>
-                            <div class="empty">No downloads found in selected range.</div>
+                            <div class="dash-empty-state"><i class="fas fa-download"></i>No downloads found in selected range.</div>
                         <?php else: ?>
                             <div class="download-feed">
                                 <?php foreach ($recentDownloadEvents as $downloadEvent): ?>
@@ -3529,11 +3544,10 @@ if (isAdmin()) {
             var rangeTotalEl = document.getElementById('rangeDownloadsValue');
             if (!rangeTotalEl) return;
 
-            var pollMs = 10000;
+            var pollMs = 30000;
             var inFlight = false;
             var timerId = null;
             var statusEl = document.getElementById('dashboardLiveStatus');
-            var dashboardForm = document.getElementById('dashboardDateFilterForm');
 
             function safeText(value) {
                 return value == null ? '' : String(value);
@@ -3569,24 +3583,64 @@ if (isAdmin()) {
                 el.textContent = Number.isFinite(safeNumber) ? String(Math.max(0, safeNumber)) : '0';
             }
 
+            var dashRangeFrom = '';
+            var dashRangeTo = '';
+
             function buildRequestParams() {
                 var params = new URLSearchParams();
                 params.set('ajax', 'dashboard_live');
-                if (dashboardForm) {
-                    var fromInput = dashboardForm.querySelector('input[name="report_from"]');
-                    var toInput = dashboardForm.querySelector('input[name="report_to"]');
-                    if (fromInput && fromInput.value) params.set('report_from', fromInput.value);
-                    if (toInput && toInput.value) params.set('report_to', toInput.value);
-                }
+                if (dashRangeFrom) params.set('range_from', dashRangeFrom);
+                if (dashRangeTo) params.set('range_to', dashRangeTo);
                 return params;
             }
 
-            function updateRangeLabels(rangeLabel) {
-                if (!rangeLabel) return;
-                document.querySelectorAll('[data-range-label-prefix]').forEach(function(labelEl) {
-                    var prefix = labelEl.getAttribute('data-range-label-prefix') || '';
-                    labelEl.textContent = prefix + rangeLabel;
-                });
+            function setDateRange(preset) {
+                document.querySelectorAll('.date-quick-btn').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-range') === preset); });
+                document.getElementById('dashboardDateCustom').style.display = 'none';
+                var now = new Date();
+                function fmt(d) {
+                    var y = d.getFullYear();
+                    var m = String(d.getMonth()+1).padStart(2,'0');
+                    var day = String(d.getDate()).padStart(2,'0');
+                    return y + '-' + m + '-' + day;
+                }
+                if (preset === 'today') {
+                    dashRangeFrom = fmt(now);
+                    dashRangeTo = fmt(now);
+                } else if (preset === '7d') {
+                    var d7 = new Date(now); d7.setDate(d7.getDate() - 6);
+                    dashRangeFrom = fmt(d7);
+                    dashRangeTo = fmt(now);
+                } else if (preset === '30d') {
+                    var d30 = new Date(now); d30.setDate(d30.getDate() - 29);
+                    dashRangeFrom = fmt(d30);
+                    dashRangeTo = fmt(now);
+                }
+                refreshDashboardLive();
+                var rangeEl = document.getElementById('dashboardRangeLabel');
+                if (rangeEl) {
+                    var labels = { 'today':'Today', '7d':'Last 7 Days', '30d':'Last 30 Days' };
+                    rangeEl.textContent = 'Range: ' + (labels[preset] || preset);
+                }
+            }
+
+            function toggleCustomDate() {
+                var el = document.getElementById('dashboardDateCustom');
+                el.style.display = el.style.display === 'none' ? 'flex' : 'none';
+                if (el.style.display === 'flex') {
+                    document.querySelectorAll('.date-quick-btn').forEach(function(b){ b.classList.remove('active'); });
+                }
+            }
+
+            function             function applyCustomDate() {
+                var f = document.getElementById('customFrom');
+                var t = document.getElementById('customTo');
+                if (f && f.value) dashRangeFrom = f.value;
+                if (t && t.value) dashRangeTo = t.value;
+                document.getElementById('dashboardDateCustom').style.display = 'none';
+                var rangeEl = document.getElementById('dashboardRangeLabel');
+                if (rangeEl) rangeEl.textContent = 'Range: ' + (dashRangeFrom || '?') + ' - ' + (dashRangeTo || '?');
+                refreshDashboardLive();
             }
 
             function updateUsers(users) {
@@ -3645,10 +3699,6 @@ if (isAdmin()) {
             function applyLiveData(data) {
                 if (!data || data.success !== true) return;
 
-                if (data.range && data.range.label) {
-                    updateRangeLabels(data.range.label);
-                }
-
                 if (data.downloads) {
                     var rangeTotal = parseInt(data.downloads.total, 10) || 0;
                     setCountById('rangeDownloadsValue', rangeTotal);
@@ -3673,37 +3723,29 @@ if (isAdmin()) {
                 updateUsers(data.users || []);
                 renderRecentDownloads(!!data.events_ready, data.recent_downloads || []);
                 if (typeof applyAdminSearch === 'function') applyAdminSearch();
-                if (data.today_mix) {
-                    var todayView = document.getElementById('todayMixView');
-                    if (todayView && !todayView.classList.contains('active-view')) {
-                        var html = '';
-                        data.today_mix.forEach(function(item) {
-                            html += '<div class="mix-row"><div class="mix-row-meta"><span>' + safeText(item.label) + '</span><span>' + item.count + ' (' + item.percent + '%)</span></div><div class="mix-track"><div class="mix-fill" style="width:' + item.percent + '%"></div></div></div>';
-                        });
-                        todayView.innerHTML = html;
+                if (data.range_mix) {
+                    var mixView = document.getElementById('rangeMixView');
+                    var mixLabel = document.getElementById('rangeMixLabel');
+                    if (mixView) {
+                        var hasData = data.range_mix.some(function(m){ return m.count > 0; });
+                        var mixHtml;
+                        if (!hasData) {
+                            mixHtml = '<div class="dash-empty-state"><i class="fas fa-inbox"></i>No files uploaded in this period.</div>';
+                        } else {
+                            mixHtml = '';
+                            data.range_mix.forEach(function(item) {
+                                mixHtml += '<div class="mix-row"><div class="mix-row-meta"><span>' + safeText(item.label) + '</span><span>' + item.count + ' (' + item.percent + '%)</span></div><div class="mix-track"><div class="mix-fill" style="width:' + item.percent + '%"></div></div></div>';
+                            });
+                        }
+                        mixView.innerHTML = mixHtml;
+                        mixView.classList.add('dash-fade-up');
+                        setTimeout(function(){ mixView.classList.remove('dash-fade-up'); }, 500);
                     }
-                    var lbl = document.getElementById('todayMixLabel');
-                    if (lbl && data.today_total !== undefined) lbl.textContent = '(Today: ' + data.today_total + ' new)';
+                    if (mixLabel && data.range && data.range.label) mixLabel.textContent = '(' + safeText(data.range.label) + ')';
                 }
+                var dlUpdated = document.getElementById('downloadsLastUpdated');
+                if (dlUpdated && data.generated_label) dlUpdated.textContent = 'Updated ' + safeText(data.generated_label);
                 setStatus('Live updated ' + safeText(data.generated_label), false);
-            }
-
-            function switchMixView(view) {
-                var todayView = document.getElementById('todayMixView');
-                var allView = document.getElementById('allMixView');
-                var lbl = document.getElementById('todayMixLabel');
-                if (view === 'today') {
-                    if (todayView) { todayView.style.display = ''; todayView.classList.add('active-view'); }
-                    if (allView) allView.style.display = 'none';
-                    if (lbl) lbl.textContent = '(Today)';
-                } else {
-                    if (todayView) { todayView.style.display = 'none'; todayView.classList.remove('active-view'); }
-                    if (allView) allView.style.display = '';
-                    if (lbl) lbl.textContent = '(All Time)';
-                }
-                document.querySelectorAll('.mix-toggle-btn').forEach(function(btn) {
-                    btn.classList.toggle('active', btn.getAttribute('data-mix') === view);
-                });
             }
 
             function refreshDashboardLive() {

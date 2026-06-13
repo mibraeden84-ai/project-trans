@@ -200,8 +200,10 @@ require __DIR__ . '/../includes/header.php';
         <div class="user-hub-kpi"><em class="user-hub-kpi-icon"><i class="fas fa-gear"></i></em><strong id="kpiSoftware"><?= (int)$homeDashboardStats['software'] ?></strong><span>Software</span></div>
         <div class="user-hub-kpi"><em class="user-hub-kpi-icon"><i class="fas fa-download"></i></em><strong id="kpiMyDownloadsTotal"><?= (int)$myDownloadTotalCount ?></strong><span>My Downloads</span></div>
     </div>
+    <?php $todayAny = $todayTotal > 0 || ($myDownloadTotalCount ?? 0) > 0; ?>
     <div class="user-hub-today-stats" style="margin-top:12px;padding:12px 16px;background:linear-gradient(135deg,rgba(0,90,160,0.06),rgba(0,168,107,0.04));border-radius:12px;border:1px solid rgba(0,90,160,0.12)">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><i class="fas fa-sun" style="color:#005aa0"></i><strong style="font-size:0.85rem;color:#0f172a">Today's Report</strong><span style="font-size:0.72rem;color:#64748b;margin-left:auto" id="todayReportLabel"><?= date('M d, Y') ?></span></div>
+        <?php if ($todayAny): ?>
         <div style="display:flex;gap:12px;flex-wrap:wrap">
             <span style="font-size:0.78rem;color:#475467"><strong id="todayConfigs"><?= $todayStats['configs'] ?></strong> Configs</span>
             <span style="font-size:0.78rem;color:#475467"><strong id="todayFirmware"><?= $todayStats['firmware'] ?></strong> Firmware</span>
@@ -209,11 +211,16 @@ require __DIR__ . '/../includes/header.php';
             <span style="font-size:0.78rem;color:#475467"><strong id="todaySoftware"><?= $todayStats['software'] ?></strong> Software</span>
             <span style="font-size:0.78rem;color:#005aa0;font-weight:600"><span id="todayTotal"><?= $todayTotal ?></span> Total Today</span>
         </div>
+        <?php else: ?>
+        <div style="text-align:center;padding:8px 0;color:#94a3b8;font-size:0.82rem"><i class="fas fa-inbox"></i> No activity recorded today yet.</div>
+        <?php endif; ?>
     </div>
     <div class="user-hub-download-daily" id="userDashDailyWrap" style="<?= empty($myDownloadByDay) ? 'display:none' : '' ?>">
+        <?php if (!empty($myDownloadByDay)): ?>
         <?php foreach ($myDownloadByDay as $myDay): ?>
         <span><strong><?= (int)($myDay['c'] ?? 0) ?></strong> on <?= escape(date('M d', strtotime((string)($myDay['day_key'] ?? 'now')))) ?></span>
         <?php endforeach; ?>
+        <?php endif; ?>
     </div>
     <div class="user-hub-recent">
         <div class="user-hub-recent-head">
@@ -334,6 +341,7 @@ require __DIR__ . '/../includes/header.php';
     function refresh() {
         if (inFlight) return;
         inFlight = true;
+        if (statusEl) statusEl.textContent = 'Refreshing...';
         fetch('index.php?' + params(), {
             method: 'GET',
             headers: { 'Accept': 'application/json' },
