@@ -78,7 +78,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign In — <?= SITE_NAME ?></title>
+    <title><?= SITE_NAME ?></title>
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg?v=2">
+    <link rel="shortcut icon" type="image/svg+xml" href="assets/images/favicon.svg?v=2">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');

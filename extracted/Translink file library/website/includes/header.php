@@ -108,7 +108,9 @@ if (!empty($_SERVER['HTTP_REFERER'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= escape($pageTitle ?? SITE_NAME) ?> — <?= SITE_NAME ?></title>
+    <title><?= escape(SITE_NAME) ?></title>
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg?v=2">
+    <link rel="shortcut icon" type="image/svg+xml" href="assets/images/favicon.svg?v=2">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
 <style>

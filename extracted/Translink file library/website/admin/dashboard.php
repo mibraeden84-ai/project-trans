@@ -501,6 +501,34 @@ function adminDeleteOwnedImage(?string $storedPath, array $prefixes): void {
     }
 }
 
+function adminDeleteUploadIfUnused(Database $db, ?string $storedPath): void {
+    $relative = normalizeStoredPath($storedPath);
+    $allowedPrefixes = [
+        'uploads/configs/',
+        'uploads/firmware/',
+        'uploads/manuals/',
+        'uploads/software/',
+    ];
+    if ($relative === '' || !adminImagePathOwned($relative, $allowedPrefixes)) {
+        return;
+    }
+
+    $activeReferences = 0;
+    foreach (['config_files', 'firmware_files', 'manuals', 'software_files'] as $tableName) {
+        $row = $db->fetchOne("SELECT COUNT(*) AS c FROM $tableName WHERE file_path = ? AND status = 'active'", [$relative]);
+        $activeReferences += (int)($row['c'] ?? 0);
+    }
+
+    if ($activeReferences > 0) {
+        return;
+    }
+
+    $abs = __DIR__ . '/../' . $relative;
+    if (is_file($abs)) {
+        @unlink($abs);
+    }
+}
+
 function adminSaveImageUpload(string $field, string $targetDir, string $prefix): array {
     if (!isset($_FILES[$field]) || !is_array($_FILES[$field])) {
         return ['ok' => true, 'path' => null];
@@ -551,9 +579,10 @@ if (isset($_POST['bulk_delete']) && isset($_POST['type']) && isset($_POST['ids']
     $table = $tableMap[$type];
     $deleted = 0;
     foreach ($ids as $id) {
-        $file = $db->fetchOne("SELECT id FROM $table WHERE id = ?", [$id]);
+        $file = $db->fetchOne("SELECT id, file_path FROM $table WHERE id = ?", [$id]);
         if ($file) {
             $db->query("UPDATE $table SET status = 'deleted' WHERE id = ?", [$id]);
+            adminDeleteUploadIfUnused($db, $file['file_path'] ?? null);
             $deleted++;
         }
     }
@@ -572,9 +601,10 @@ if (isset($_GET['delete']) && isset($_GET['type'])) {
     $tableMap = ['config' => 'config_files', 'firmware' => 'firmware_files', 'manual' => 'manuals', 'software' => 'software_files'];
     $deleted = false;
     if (isset($tableMap[$type])) {
-        $file = $db->fetchOne("SELECT name FROM {$tableMap[$type]} WHERE id = ?", [$id]);
+        $file = $db->fetchOne("SELECT name, file_path FROM {$tableMap[$type]} WHERE id = ?", [$id]);
         if ($file) {
             $db->query("UPDATE {$tableMap[$type]} SET status = 'deleted' WHERE id = ?", [$id]);
+            adminDeleteUploadIfUnused($db, $file['file_path'] ?? null);
             $deleted = true;
             setFlash("Deleted " . $file['name']);
         }
@@ -1293,7 +1323,9 @@ if (isAdmin()) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard — <?= SITE_NAME ?></title>
+    <title><?= SITE_NAME ?></title>
+    <link rel="icon" type="image/svg+xml" href="../assets/images/favicon.svg?v=2">
+    <link rel="shortcut icon" type="image/svg+xml" href="../assets/images/favicon.svg?v=2">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <style>
         :root {

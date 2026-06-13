@@ -30,4 +30,6 @@ RUN mkdir -p /var/www/html/uploads /var/www/html/tmp/sessions \
   && chmod +x /var/www/html/render-start.sh \
   && chown -R www-data:www-data /var/www/html/uploads /var/www/html/tmp
 
+EXPOSE 10000
+
 CMD ["/var/www/html/render-start.sh"]
