@@ -19,7 +19,10 @@ RUN { \
   } > /usr/local/etc/php/conf.d/translink-upload-limits.ini
 
 WORKDIR /var/www/html
-COPY extracted/Translink\ file\ library/website/ /var/www/html/
+COPY extracted/ /var/www/html/
+RUN mv /var/www/html/Translink\ file\ library/website/* /var/www/html/ \
+    && mv /var/www/html/Translink\ file\ library/website/.* /var/www/html/ 2>/dev/null || true \
+    && rm -rf /var/www/html/Translink\ file\ library
 
 # Keep a copy of bundled uploads outside the future Render disk mount.
 RUN mkdir -p /opt/translink-seed/uploads \
