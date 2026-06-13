@@ -3373,27 +3373,28 @@ if (isAdmin()) {
         }
 
         function showTab(tabName) {
-            var nextTab = document.getElementById('tab-' + tabName);
-            if (!nextTab) { return false; }
-            var allTabs = document.querySelectorAll('.tab-content');
-            for (var i = 0; i < allTabs.length; i++) { allTabs[i].style.display = 'none'; allTabs[i].classList.remove('active'); }
-            var allBtns = document.querySelectorAll('.tab-btn');
-            for (var i = 0; i < allBtns.length; i++) { allBtns[i].classList.remove('active'); }
-            var allNavs = document.querySelectorAll('.sidebar a');
-            for (var i = 0; i < allNavs.length; i++) { allNavs[i].classList.remove('active'); }
-            nextTab.style.display = 'block';
-            nextTab.classList.add('active');
-            for (var i = 0; i < allBtns.length; i++) {
-                var oc = allBtns[i].getAttribute('onclick') || '';
-                if (oc.indexOf("'" + tabName + "'") !== -1) { allBtns[i].classList.add('active'); }
-            }
-            for (var i = 0; i < allNavs.length; i++) {
-                var oc = allNavs[i].getAttribute('onclick') || '';
-                if (oc.indexOf("'" + tabName + "'") !== -1) { allNavs[i].classList.add('active'); }
-            }
-            try { updateAdminPageTitle(tabName); } catch(e) {}
-            try { applyAdminSearch(); } catch(e) {}
-            try { closeAdminMobileNav(); } catch(e) {}
+            setTimeout(function() {
+                var tabs = document.querySelectorAll('.tab-content');
+                var btns = document.querySelectorAll('.tab-btn');
+                var navs = document.querySelectorAll('.sidebar a');
+                var i, el, oc;
+                for (i = 0; i < tabs.length; i++) { tabs[i].style.display = 'none'; }
+                for (i = 0; i < btns.length; i++) { btns[i].classList.remove('active'); }
+                for (i = 0; i < navs.length; i++) { navs[i].classList.remove('active'); }
+                el = document.getElementById('tab-' + tabName);
+                if (el) { el.style.display = 'block'; }
+                for (i = 0; i < btns.length; i++) {
+                    oc = btns[i].getAttribute('onclick') || '';
+                    if (oc.indexOf("'" + tabName + "'") !== -1) btns[i].classList.add('active');
+                }
+                for (i = 0; i < navs.length; i++) {
+                    oc = navs[i].getAttribute('onclick') || '';
+                    if (oc.indexOf("'" + tabName + "'") !== -1) navs[i].classList.add('active');
+                }
+                try { updateAdminPageTitle(tabName); } catch(e) {}
+                try { applyAdminSearch(); } catch(e) {}
+                try { closeAdminMobileNav(); } catch(e) {}
+            }, 10);
             return false;
         }
 
