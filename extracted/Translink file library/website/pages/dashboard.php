@@ -116,6 +116,16 @@ try {
     $homeRecentLibrary = [];
 }
 
+$todayStart = date('Y-m-d') . ' 00:00:00';
+$todayEnd = date('Y-m-d') . ' 23:59:59';
+$todayStats = [
+    'configs' => (int)($db->fetchOne("SELECT COUNT(*) AS c FROM config_files WHERE status = 'active' AND created_at >= ? AND created_at <= ?", [$todayStart, $todayEnd])['c'] ?? 0),
+    'firmware' => (int)($db->fetchOne("SELECT COUNT(*) AS c FROM firmware_files WHERE status = 'active' AND created_at >= ? AND created_at <= ?", [$todayStart, $todayEnd])['c'] ?? 0),
+    'manuals' => (int)($db->fetchOne("SELECT COUNT(*) AS c FROM manuals WHERE status = 'active' AND created_at >= ? AND created_at <= ?", [$todayStart, $todayEnd])['c'] ?? 0),
+    'software' => (int)($db->fetchOne("SELECT COUNT(*) AS c FROM software_files WHERE status = 'active' AND created_at >= ? AND created_at <= ?", [$todayStart, $todayEnd])['c'] ?? 0),
+];
+$todayTotal = $todayStats['configs'] + $todayStats['firmware'] + $todayStats['manuals'] + $todayStats['software'];
+
 if (isset($_GET['ajax']) && (string)($_GET['ajax'] ?? '') === 'dashboard_live') {
     header('Content-Type: application/json; charset=utf-8');
 
@@ -158,6 +168,8 @@ if (isset($_GET['ajax']) && (string)($_GET['ajax'] ?? '') === 'dashboard_live') 
             'software' => (int)$homeDashboardStats['software'],
             'my_downloads_total' => (int)$myDownloadTotalCount,
         ],
+        'today_stats' => $todayStats,
+        'today_total' => $todayTotal,
         'daily' => $daily,
         'recent' => $recent,
     ]);
@@ -176,7 +188,7 @@ require __DIR__ . '/../includes/header.php';
         </div>
     </div>
     <div class="user-hub-date-filter">
-        <span class="user-hub-date-meta" id="userDashLiveStatus">Live every 12s (USA ET)</span>
+        <span class="user-hub-date-meta" id="userDashLiveStatus">Live every 12s</span>
     </div>
     <div class="user-hub-kpis user-hub-kpis-modern">
         <div class="user-hub-kpi"><em class="user-hub-kpi-icon"><i class="fas fa-layer-group"></i></em><strong id="kpiTotalFiles"><?= (int)$homeDashboardStats['total_files'] ?></strong><span>Total Files</span></div>
@@ -187,6 +199,16 @@ require __DIR__ . '/../includes/header.php';
         <div class="user-hub-kpi"><em class="user-hub-kpi-icon"><i class="fas fa-book-open"></i></em><strong id="kpiManuals"><?= (int)$homeDashboardStats['manuals'] ?></strong><span>Manuals</span></div>
         <div class="user-hub-kpi"><em class="user-hub-kpi-icon"><i class="fas fa-gear"></i></em><strong id="kpiSoftware"><?= (int)$homeDashboardStats['software'] ?></strong><span>Software</span></div>
         <div class="user-hub-kpi"><em class="user-hub-kpi-icon"><i class="fas fa-download"></i></em><strong id="kpiMyDownloadsTotal"><?= (int)$myDownloadTotalCount ?></strong><span>My Downloads</span></div>
+    </div>
+    <div class="user-hub-today-stats" style="margin-top:12px;padding:12px 16px;background:linear-gradient(135deg,rgba(0,90,160,0.06),rgba(0,168,107,0.04));border-radius:12px;border:1px solid rgba(0,90,160,0.12)">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><i class="fas fa-sun" style="color:#005aa0"></i><strong style="font-size:0.85rem;color:#0f172a">Today's Report</strong><span style="font-size:0.72rem;color:#64748b;margin-left:auto" id="todayReportLabel"><?= date('M d, Y') ?></span></div>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <span style="font-size:0.78rem;color:#475467"><strong id="todayConfigs"><?= $todayStats['configs'] ?></strong> Configs</span>
+            <span style="font-size:0.78rem;color:#475467"><strong id="todayFirmware"><?= $todayStats['firmware'] ?></strong> Firmware</span>
+            <span style="font-size:0.78rem;color:#475467"><strong id="todayManuals"><?= $todayStats['manuals'] ?></strong> Manuals</span>
+            <span style="font-size:0.78rem;color:#475467"><strong id="todaySoftware"><?= $todayStats['software'] ?></strong> Software</span>
+            <span style="font-size:0.78rem;color:#005aa0;font-weight:600"><span id="todayTotal"><?= $todayTotal ?></span> Total Today</span>
+        </div>
     </div>
     <div class="user-hub-download-daily" id="userDashDailyWrap" style="<?= empty($myDownloadByDay) ? 'display:none' : '' ?>">
         <?php foreach ($myDownloadByDay as $myDay): ?>
@@ -298,6 +320,13 @@ require __DIR__ . '/../includes/header.php';
         setNum('kpiManuals', data.stats.manuals);
         setNum('kpiSoftware', data.stats.software);
         setNum('kpiMyDownloadsTotal', data.stats.my_downloads_total);
+        if (data.today_stats) {
+            setNum('todayConfigs', data.today_stats.configs);
+            setNum('todayFirmware', data.today_stats.firmware);
+            setNum('todayManuals', data.today_stats.manuals);
+            setNum('todaySoftware', data.today_stats.software);
+            setNum('todayTotal', data.today_total);
+        }
         renderDaily(data.daily || []);
         renderRecent(data.recent || []);
         if (statusEl) statusEl.textContent = 'Live updated ' + safeText(data.generated_label);

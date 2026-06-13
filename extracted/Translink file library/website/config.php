@@ -1,5 +1,7 @@
 <?php
 date_default_timezone_set('Africa/Addis_Ababa');
+define('DASH_TIMEZONE', 'Africa/Addis_Ababa');
+define('DASH_TIMEZONE_LABEL', 'EAT');
 
 if (session_status() === PHP_SESSION_NONE) {
     session_start();

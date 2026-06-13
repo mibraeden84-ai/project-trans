@@ -1178,6 +1178,21 @@ if (isset($_GET['ajax']) && (string)($_GET['ajax'] ?? '') === 'dashboard_live') 
         'users' => (int)($db->fetchOne("SELECT COUNT(*) as c FROM users")['c'] ?? 0),
     ];
     $liveStats['total_files'] = $liveStats['configs'] + $liveStats['firmware'] + $liveStats['manuals'] + $liveStats['software'];
+    $liveTodayStats = [
+        'configs' => (int)($db->fetchOne("SELECT COUNT(*) as c FROM config_files WHERE status = 'active' AND created_at >= ? AND created_at <= ?", [$todayStart, $todayEnd])['c'] ?? 0),
+        'firmware' => (int)($db->fetchOne("SELECT COUNT(*) as c FROM firmware_files WHERE status = 'active' AND created_at >= ? AND created_at <= ?", [$todayStart, $todayEnd])['c'] ?? 0),
+        'manuals' => (int)($db->fetchOne("SELECT COUNT(*) as c FROM manuals WHERE status = 'active' AND created_at >= ? AND created_at <= ?", [$todayStart, $todayEnd])['c'] ?? 0),
+        'software' => (int)($db->fetchOne("SELECT COUNT(*) as c FROM software_files WHERE status = 'active' AND created_at >= ? AND created_at <= ?", [$todayStart, $todayEnd])['c'] ?? 0),
+    ];
+    $liveTodayTotal = $liveTodayStats['configs'] + $liveTodayStats['firmware'] + $liveTodayStats['manuals'] + $liveTodayStats['software'];
+    $liveTodaySafe = max(1, $liveTodayTotal);
+    $liveTodayMix = [
+        ['label' => 'Configs', 'count' => $liveTodayStats['configs'], 'percent' => round(($liveTodayStats['configs'] / $liveTodaySafe) * 100)],
+        ['label' => 'Firmware', 'count' => $liveTodayStats['firmware'], 'percent' => round(($liveTodayStats['firmware'] / $liveTodaySafe) * 100)],
+        ['label' => 'Manuals', 'count' => $liveTodayStats['manuals'], 'percent' => round(($liveTodayStats['manuals'] / $liveTodaySafe) * 100)],
+        ['label' => 'Software', 'count' => $liveTodayStats['software'], 'percent' => round(($liveTodayStats['software'] / $liveTodaySafe) * 100)],
+        ['label' => "Today's Total", 'count' => $liveTodayTotal, 'percent' => 100],
+    ];
 
     $usageColumnsReady = ensureUserUsageColumns();
     if ($usageColumnsReady) {
@@ -1226,6 +1241,8 @@ if (isset($_GET['ajax']) && (string)($_GET['ajax'] ?? '') === 'dashboard_live') 
             'users' => (int)($downloadRangeStats['users'] ?? 0),
         ],
         'stats' => $liveStats,
+        'today_mix' => $liveTodayMix,
+        'today_total' => $liveTodayTotal,
         'events_ready' => $downloadEventsReady,
         'recent_downloads' => $recentDownloadPayload,
         'users' => $liveUserPayload,
@@ -1277,6 +1294,24 @@ $fileMix = [
     ['label' => 'Firmware', 'count' => (int)$stats['firmware'], 'percent' => round(((int)$stats['firmware'] / $totalFilesSafe) * 100)],
     ['label' => 'Manuals', 'count' => (int)$stats['manuals'], 'percent' => round(((int)$stats['manuals'] / $totalFilesSafe) * 100)],
     ['label' => 'Software', 'count' => (int)$stats['software'], 'percent' => round(((int)$stats['software'] / $totalFilesSafe) * 100)],
+    ['label' => 'Total Files', 'count' => $totalFilesCount, 'percent' => 100],
+];
+$todayStart = date('Y-m-d') . ' 00:00:00';
+$todayEnd = date('Y-m-d') . ' 23:59:59';
+$todayStats = [
+    'configs' => (int)($db->fetchOne("SELECT COUNT(*) as c FROM config_files WHERE status = 'active' AND created_at >= ? AND created_at <= ?", [$todayStart, $todayEnd])['c'] ?? 0),
+    'firmware' => (int)($db->fetchOne("SELECT COUNT(*) as c FROM firmware_files WHERE status = 'active' AND created_at >= ? AND created_at <= ?", [$todayStart, $todayEnd])['c'] ?? 0),
+    'manuals' => (int)($db->fetchOne("SELECT COUNT(*) as c FROM manuals WHERE status = 'active' AND created_at >= ? AND created_at <= ?", [$todayStart, $todayEnd])['c'] ?? 0),
+    'software' => (int)($db->fetchOne("SELECT COUNT(*) as c FROM software_files WHERE status = 'active' AND created_at >= ? AND created_at <= ?", [$todayStart, $todayEnd])['c'] ?? 0),
+];
+$todayTotal = $todayStats['configs'] + $todayStats['firmware'] + $todayStats['manuals'] + $todayStats['software'];
+$todayFilesSafe = max(1, $todayTotal);
+$todayMix = [
+    ['label' => 'Configs', 'count' => $todayStats['configs'], 'percent' => round(($todayStats['configs'] / $todayFilesSafe) * 100)],
+    ['label' => 'Firmware', 'count' => $todayStats['firmware'], 'percent' => round(($todayStats['firmware'] / $todayFilesSafe) * 100)],
+    ['label' => 'Manuals', 'count' => $todayStats['manuals'], 'percent' => round(($todayStats['manuals'] / $todayFilesSafe) * 100)],
+    ['label' => 'Software', 'count' => $todayStats['software'], 'percent' => round(($todayStats['software'] / $todayFilesSafe) * 100)],
+    ['label' => "Today's Total", 'count' => $todayTotal, 'percent' => 100],
 ];
 
 $initialTab = isAdmin() ? 'dashboard' : (canUpload() ? 'add-file' : 'admin-control');
@@ -1538,6 +1573,9 @@ if (isAdmin()) {
         .mix-row-meta { display:flex; justify-content:space-between; align-items:center; font-size:0.78rem; color:#475467; margin-bottom:4px; }
         .mix-track { width:100%; height:8px; border-radius:999px; background:#edf2f7; overflow:hidden; }
         .mix-fill { height:100%; border-radius:999px; background:linear-gradient(90deg, #005aa0 0%, #1c7ed6 100%); }
+        .mix-toggle-btn { padding:4px 12px; border:1px solid #d9e6f3; border-radius:999px; background:#fff; color:#475467; font-size:0.75rem; cursor:pointer; transition:all 0.15s; }
+        .mix-toggle-btn.active { background:#005aa0; color:#fff; border-color:#005aa0; }
+        .mix-toggle-btn:hover:not(.active) { background:#f0f6ff; }
         .upload-dropzone { border:1.5px dashed #9fc0e1; border-radius:12px; background:linear-gradient(180deg, #fbfdff 0%, #f4f9ff 100%); padding:14px; display:flex; align-items:center; justify-content:space-between; gap:12px; min-height:72px; cursor:pointer; transition:border-color 0.18s, background 0.18s, box-shadow 0.18s, transform 0.18s; }
         .upload-dropzone-main { display:flex; align-items:center; gap:11px; min-width:0; }
         .upload-dropzone-main i { color:#005aa0; font-size:1.05rem; width:32px; height:32px; border-radius:9px; display:inline-flex; align-items:center; justify-content:center; background:#fff; border:1px solid #d7e6f6; flex:0 0 auto; }
@@ -1901,7 +1939,23 @@ if (isAdmin()) {
                 </div>
                 <div class="dashboard-insights">
                     <div class="mix-card">
-                        <h3><i class="fas fa-chart-pie"></i> File Distribution</h3>
+                        <h3><i class="fas fa-chart-pie"></i> File Distribution <span style="font-size:0.75rem;font-weight:400;color:#64748b;margin-left:8px" id="todayMixLabel">(Today)</span></h3>
+                        <div style="display:flex;gap:4px;margin-bottom:12px;flex-wrap:wrap">
+                            <button class="mix-toggle-btn active" data-mix="today" onclick="switchMixView('today')">Today</button>
+                            <button class="mix-toggle-btn" data-mix="all" onclick="switchMixView('all')">All Time</button>
+                        </div>
+                        <div id="todayMixView">
+                        <?php foreach ($todayMix as $mix): ?>
+                        <div class="mix-row">
+                            <div class="mix-row-meta">
+                                <span><?= escape($mix['label']) ?></span>
+                                <span><?= (int)$mix['count'] ?> (<?= (int)$mix['percent'] ?>%)</span>
+                            </div>
+                            <div class="mix-track"><div class="mix-fill" style="width: <?= (int)$mix['percent'] ?>%"></div></div>
+                        </div>
+                        <?php endforeach; ?>
+                        </div>
+                        <div id="allMixView" style="display:none">
                         <?php foreach ($fileMix as $mix): ?>
                         <div class="mix-row">
                             <div class="mix-row-meta">
@@ -1911,6 +1965,7 @@ if (isAdmin()) {
                             <div class="mix-track"><div class="mix-fill" style="width: <?= (int)$mix['percent'] ?>%"></div></div>
                         </div>
                         <?php endforeach; ?>
+                        </div>
                     </div>
                     <div class="mix-card">
                         <h3><i class="fas fa-bolt"></i> Admin Activity Snapshot</h3>
@@ -3618,7 +3673,37 @@ if (isAdmin()) {
                 updateUsers(data.users || []);
                 renderRecentDownloads(!!data.events_ready, data.recent_downloads || []);
                 if (typeof applyAdminSearch === 'function') applyAdminSearch();
+                if (data.today_mix) {
+                    var todayView = document.getElementById('todayMixView');
+                    if (todayView && !todayView.classList.contains('active-view')) {
+                        var html = '';
+                        data.today_mix.forEach(function(item) {
+                            html += '<div class="mix-row"><div class="mix-row-meta"><span>' + safeText(item.label) + '</span><span>' + item.count + ' (' + item.percent + '%)</span></div><div class="mix-track"><div class="mix-fill" style="width:' + item.percent + '%"></div></div></div>';
+                        });
+                        todayView.innerHTML = html;
+                    }
+                    var lbl = document.getElementById('todayMixLabel');
+                    if (lbl && data.today_total !== undefined) lbl.textContent = '(Today: ' + data.today_total + ' new)';
+                }
                 setStatus('Live updated ' + safeText(data.generated_label), false);
+            }
+
+            function switchMixView(view) {
+                var todayView = document.getElementById('todayMixView');
+                var allView = document.getElementById('allMixView');
+                var lbl = document.getElementById('todayMixLabel');
+                if (view === 'today') {
+                    if (todayView) { todayView.style.display = ''; todayView.classList.add('active-view'); }
+                    if (allView) allView.style.display = 'none';
+                    if (lbl) lbl.textContent = '(Today)';
+                } else {
+                    if (todayView) { todayView.style.display = 'none'; todayView.classList.remove('active-view'); }
+                    if (allView) allView.style.display = '';
+                    if (lbl) lbl.textContent = '(All Time)';
+                }
+                document.querySelectorAll('.mix-toggle-btn').forEach(function(btn) {
+                    btn.classList.toggle('active', btn.getAttribute('data-mix') === view);
+                });
             }
 
             function refreshDashboardLive() {
