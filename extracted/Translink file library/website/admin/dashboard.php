@@ -1072,7 +1072,8 @@ function nowUsEtLabel(string $format = 'h:i:s A'): string {
 }
 
 function normalizeDashboardDateRange(string $reportFromInput, string $reportToInput): array {
-    $reportDefaultFrom = date('Y-m-01');
+    // Smart default: Last 7 days for better data visibility
+    $reportDefaultFrom = date('Y-m-d', strtotime('-6 days'));
     $reportDefaultTo = date('Y-m-d');
     $datePattern = '/^\d{4}-\d{2}-\d{2}$/';
 
@@ -1191,6 +1192,10 @@ if (isset($_GET['ajax']) && (string)($_GET['ajax'] ?? '') === 'dashboard_live') 
         'manuals' => (int)($db->fetchOne("SELECT COUNT(*) as c FROM manuals WHERE status = 'active' AND created_at >= ? AND created_at <= ?", [$ajaxRangeStart, $ajaxRangeEnd])['c'] ?? 0),
         'software' => (int)($db->fetchOne("SELECT COUNT(*) as c FROM software_files WHERE status = 'active' AND created_at >= ? AND created_at <= ?", [$ajaxRangeStart, $ajaxRangeEnd])['c'] ?? 0),
     ];
+
+    // Get recent uploads for the selected date range
+    $recentConfigsCount = (int)($db->fetchOne("SELECT COUNT(*) as c FROM config_files WHERE status = 'active' AND created_at >= ? AND created_at <= ?", [$ajaxRangeStart, $ajaxRangeEnd])['c'] ?? 0);
+    $recentFirmwareCount = (int)($db->fetchOne("SELECT COUNT(*) as c FROM firmware_files WHERE status = 'active' AND created_at >= ? AND created_at <= ?", [$ajaxRangeStart, $ajaxRangeEnd])['c'] ?? 0);
     $liveRangeTotal = $liveRangeStats['configs'] + $liveRangeStats['firmware'] + $liveRangeStats['manuals'] + $liveRangeStats['software'];
     $liveRangeSafe = max(1, $liveRangeTotal);
     $liveMix = [
@@ -1253,6 +1258,10 @@ if (isset($_GET['ajax']) && (string)($_GET['ajax'] ?? '') === 'dashboard_live') 
         'events_ready' => $downloadEventsReady,
         'recent_downloads' => $recentDownloadPayload,
         'users' => $liveUserPayload,
+        'recent_uploads' => [
+            'configs' => $recentConfigsCount,
+            'firmware' => $recentFirmwareCount,
+        ],
     ]);
     exit;
 }
@@ -1323,9 +1332,9 @@ $todayMix = [
 
 $initialTab = isAdmin() ? 'dashboard' : (canUpload() ? 'add-file' : 'admin-control');
 
-// Get recent uploads
-$recentConfigs = $db->fetchAll("SELECT c.*, dm.name as model_name, b.name as brand_name FROM config_files c JOIN device_models dm ON c.device_model_id = dm.id JOIN brands b ON dm.brand_id = b.id WHERE c.status = 'active' ORDER BY c.created_at DESC LIMIT 5");
-$recentFirmware = $db->fetchAll("SELECT f.*, b.name as brand_name FROM firmware_files f JOIN brands b ON f.brand_id = b.id WHERE f.status = 'active' ORDER BY f.created_at DESC LIMIT 5");
+// Get recent uploads filtered by selected date range
+$recentConfigs = $db->fetchAll("SELECT c.*, dm.name as model_name, b.name as brand_name FROM config_files c JOIN device_models dm ON c.device_model_id = dm.id JOIN brands b ON dm.brand_id = b.id WHERE c.status = 'active' AND c.created_at >= ? AND c.created_at <= ? ORDER BY c.created_at DESC LIMIT 5", [$reportRangeStart, $reportRangeEnd]);
+$recentFirmware = $db->fetchAll("SELECT f.*, b.name as brand_name FROM firmware_files f JOIN brands b ON f.brand_id = b.id WHERE f.status = 'active' AND f.created_at >= ? AND f.created_at <= ? ORDER BY f.created_at DESC LIMIT 5", [$reportRangeStart, $reportRangeEnd]);
 
 $editorAccounts = $db->fetchAll("SELECT id, username, is_active FROM users WHERE role = 'editor' ORDER BY username ASC LIMIT ?", [$adminTablePageSize]);
 $selectedAccessUserId = (int)($_GET['access_user'] ?? 0);
@@ -1985,12 +1994,12 @@ if (isAdmin()) {
                     <div class="mix-card">
                         <h3><i class="fas fa-bolt"></i> Admin Activity Snapshot</h3>
                         <div class="mix-row">
-                            <div class="mix-row-meta"><span>Recent Config Uploads</span><span><?= count($recentConfigs) ?></span></div>
-                            <div class="mix-track"><div class="mix-fill" style="width: <?= min(100, count($recentConfigs) * 20) ?>%"></div></div>
+                            <div class="mix-row-meta"><span>Recent Config Uploads</span><span id="recentConfigsCount"><?= count($recentConfigs) ?></span></div>
+                            <div class="mix-track"><div class="mix-fill" id="recentConfigsBar" style="width: <?= count($recentConfigs) > 0 ? 100 : 0 ?>%"></div></div>
                         </div>
                         <div class="mix-row">
-                            <div class="mix-row-meta"><span>Recent Firmware Uploads</span><span><?= count($recentFirmware) ?></span></div>
-                            <div class="mix-track"><div class="mix-fill" style="width: <?= min(100, count($recentFirmware) * 20) ?>%"></div></div>
+                            <div class="mix-row-meta"><span>Recent Firmware Uploads</span><span id="recentFirmwareCount"><?= count($recentFirmware) ?></span></div>
+                            <div class="mix-track"><div class="mix-fill" id="recentFirmwareBar" style="width: <?= count($recentFirmware) > 0 ? 100 : 0 ?>%"></div></div>
                         </div>
                         <div class="mix-row">
                             <div class="mix-row-meta"><span>Library Coverage</span><span><?= (int)$stats['brands'] ?> brands / <?= (int)$stats['models'] ?> models</span></div>
@@ -3491,17 +3500,27 @@ if (isAdmin()) {
                 const tab = location.hash.replace('#', '');
                 if (document.getElementById('tab-' + tab)) {
                     showTab(tab);
+                    // Clear hash after using it to prevent going to same tab on refresh
+                    history.replaceState(null, null, ' ');
                 }
-            }
-            var activeTabEl = document.querySelector('.tab-content.active');
-            if (activeTabEl) {
-                updateAdminPageTitle(activeTabEl.id.replace(/^tab-/, ''));
+            } else {
+                // If no hash, ensure the PHP initial tab is properly shown
+                var activeTabEl = document.querySelector('.tab-content.active');
+                if (!activeTabEl) {
+                    // Fallback to dashboard if no active tab found
+                    showTab('dashboard');
+                } else {
+                    updateAdminPageTitle(activeTabEl.id.replace(/^tab-/, ''));
+                }
             }
             applyAdminSearch();
         })();
 
         // Make showTab globally accessible for onclick handlers
         window.showTab = showTab;
+        window.clearAdminSearch = clearAdminSearch;
+        window.applyAdminSearch = applyAdminSearch;
+        window.updateAdminPageTitle = updateAdminPageTitle;
 
         // === FILE RENAME MODAL ===
         function openRenameModal(btn) {
