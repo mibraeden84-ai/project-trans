@@ -3792,6 +3792,22 @@ if (isAdmin()) {
                     setCountById('kpiUsers', data.stats.users);
                 }
 
+                // Update recent uploads counts and progress bars
+                if (data.recent_uploads) {
+                    var configsCount = parseInt(data.recent_uploads.configs, 10) || 0;
+                    var firmwareCount = parseInt(data.recent_uploads.firmware, 10) || 0;
+
+                    var configsCountEl = document.getElementById('recentConfigsCount');
+                    var configsBarEl = document.getElementById('recentConfigsBar');
+                    if (configsCountEl) configsCountEl.textContent = configsCount;
+                    if (configsBarEl) configsBarEl.style.width = (configsCount > 0 ? 100 : 0) + '%';
+
+                    var firmwareCountEl = document.getElementById('recentFirmwareCount');
+                    var firmwareBarEl = document.getElementById('recentFirmwareBar');
+                    if (firmwareCountEl) firmwareCountEl.textContent = firmwareCount;
+                    if (firmwareBarEl) firmwareBarEl.style.width = (firmwareCount > 0 ? 100 : 0) + '%';
+                }
+
                 updateUsers(data.users || []);
                 renderRecentDownloads(!!data.events_ready, data.recent_downloads || []);
                 if (typeof applyAdminSearch === 'function') applyAdminSearch();
