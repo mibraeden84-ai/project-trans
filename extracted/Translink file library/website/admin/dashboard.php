@@ -3373,6 +3373,7 @@ if (isAdmin()) {
         }
 
         function showTab(tabName) {
+            alert('DEBUG: showTab called with: ' + tabName);
             setTimeout(function() {
                 var tabs = document.querySelectorAll('.tab-content');
                 var btns = document.querySelectorAll('.tab-btn');
