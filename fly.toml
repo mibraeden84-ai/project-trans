@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for translink-file-librar on 2026-06-13T09:43:58Z
+# fly.toml app configuration file generated for file-library-translink on 2026-06-13T09:55:39Z
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'translink-file-librar'
+app = 'file-library-translink'
 primary_region = 'iad'
 
 [build]
