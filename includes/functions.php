@@ -40,7 +40,18 @@ function hasPermission($perm) {
     $role = $_SESSION['user_role'] ?? '';
     if ($role === 'admin') return true;
     $p = getCachedPermissions();
-    return $p[$perm] ?? 0;
+    if (!empty($p['_has_perms_row'])) {
+        return $p[$perm] ?? 0;
+    }
+    $viewPerms = ['can_view_configs','can_view_firmware','can_view_manuals','can_view_software','can_view_brands_models'];
+    $editorPerms = ['can_upload','can_edit_files'];
+    if ($role === 'editor' && (in_array($perm, $viewPerms) || in_array($perm, $editorPerms))) {
+        return true;
+    }
+    if (($role === 'user' || $role === 'viewer') && in_array($perm, $viewPerms)) {
+        return true;
+    }
+    return 0;
 }
 
 function getCachedPermissions() {
@@ -62,7 +73,11 @@ function fetchUserPermissions($userId = null) {
     try {
         $db = Database::getInstance();
         $p = $db->fetchOne("SELECT * FROM user_permissions WHERE user_id = ?", [$userId]);
-        return $p ? array_merge($defaults, $p) : $defaults;
+        if ($p) {
+            $p['_has_perms_row'] = true;
+            return array_merge($defaults, $p);
+        }
+        return $defaults;
     } catch (Exception $e) {
         return $defaults;
     }
