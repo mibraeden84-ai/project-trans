@@ -786,6 +786,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_model'])) {
     $modelId = (int)($_POST['model_id'] ?? 0);
     $modelBrandId = (int)($_POST['model_brand_id'] ?? 0);
     $modelName = trim($_POST['model_name'] ?? '');
+    $modelDescription = trim($_POST['model_description'] ?? '');
     $modelSystemType = $_POST['model_system_type'] ?? null;
     $currentModel = $modelId > 0 ? $db->fetchOne("SELECT id, image_url FROM device_models WHERE id = ?", [$modelId]) : null;
     $modelImagePath = $currentModel['image_url'] ?? null;
@@ -815,8 +816,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_model'])) {
                     adminDeleteOwnedImage($modelImagePath, ['uploads/models/']);
                     $modelImagePath = $uploadedPath;
                 }
-                $db->query("UPDATE device_models SET brand_id = ?, name = ?, slug = ?, system_type = ?, image_url = ? WHERE id = ?",
-                    [$modelBrandId, $modelName, $slug, $modelSystemType, $modelImagePath, $modelId]);
+                $db->query("UPDATE device_models SET brand_id = ?, name = ?, slug = ?, description = ?, system_type = ?, image_url = ? WHERE id = ?",
+                    [$modelBrandId, $modelName, $slug, $modelDescription ?: null, $modelSystemType, $modelImagePath, $modelId]);
                 setFlash("Model updated");
             }
         }
@@ -902,6 +903,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_model']) && is
     if (!canManageModels()) { setFlash('You don\'t have permission to create models', 'error'); header('Location: dashboard.php#add-file'); exit; }
     $modelName = trim($_POST['model_name']);
     $modelBrandId = (int)($_POST['model_brand_id'] ?? 0);
+    $modelDescription = trim($_POST['model_description'] ?? '');
     $modelSystemType = $_POST['model_system_type'] ?? null;
     if ($modelSystemType === '') $modelSystemType = null;
     if ($modelName && $modelBrandId) {
@@ -914,7 +916,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_model']) && is
                 header('Location: dashboard.php#add-file');
                 exit;
             }
-            $newId = $db->insert("INSERT INTO device_models (brand_id, name, slug, system_type, image_url) VALUES (?, ?, ?, ?, ?)", [$modelBrandId, $modelName, $slug, $modelSystemType, $upload['path'] ?? null]);
+            $newId = $db->insert("INSERT INTO device_models (brand_id, name, slug, description, system_type, image_url) VALUES (?, ?, ?, ?, ?, ?)", [$modelBrandId, $modelName, $slug, $modelDescription ?: null, $modelSystemType, $upload['path'] ?? null]);
             $return = $_POST['return_to'] ?? 'dashboard.php#add-file';
             $anchor = '';
             $hashPos = strpos($return, '#');
@@ -2263,6 +2265,9 @@ if (isAdmin()) {
                             <button type="submit" name="create_model" class="btn btn-sm btn-primary" style="white-space:nowrap"><i class="fas fa-plus"></i> Create</button>
                             <button type="button" class="btn btn-sm" style="background:#e0e0e0;color:#333" onclick="hideInlineForm('modelInlineForm')">Cancel</button>
                         </div>
+                        <div class="upload-inline-row" style="margin-top:6px">
+                            <textarea name="model_description" rows="1" placeholder="Description..." style="flex:1;padding:6px 10px;border:2px solid #e0e0e0;border-radius:6px;font-size:0.85rem;resize:vertical"></textarea>
+                        </div>
                     </form>
                     </div>
                 </div>
@@ -2835,6 +2840,8 @@ if (isAdmin()) {
                         <tr>
                             <td>
                                 <input type="text" name="model_name" value="<?= escape($modelRow['name']) ?>" form="<?= $modelFormId ?>" required>
+                                <br>
+                                <textarea name="model_description" form="<?= $modelFormId ?>" rows="1" placeholder="Description..." style="width:100%;resize:vertical;margin-top:4px;font-size:0.85em"><?= escape($modelRow['description'] ?? '') ?></textarea>
                             </td>
                             <td>
                                 <select name="model_brand_id" form="<?= $modelFormId ?>" required>
