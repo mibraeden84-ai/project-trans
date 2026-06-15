@@ -1,0 +1,1 @@
+Placeholder firmware file for starlink_fw_update.txt

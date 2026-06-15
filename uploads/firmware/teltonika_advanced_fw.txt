@@ -1,0 +1,1 @@
+Placeholder firmware file for teltonika_advanced_fw.txt

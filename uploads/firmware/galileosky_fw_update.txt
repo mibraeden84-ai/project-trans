@@ -1,0 +1,1 @@
+Placeholder firmware file for galileosky_fw_update.txt
