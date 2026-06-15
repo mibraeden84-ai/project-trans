@@ -427,7 +427,7 @@ require __DIR__ . '/../includes/header.php';
         <aside class="profile-panel">
             <div class="profile-avatar-wrap" id="profileAvatarWrap">
                 <?php if (!empty($user['image'])): ?>
-                <img src="<?= escape($user['image']) ?>" alt="" id="profileAvatarPreview">
+                <img src="/<?= ltrim(escape($user['image']), '/') ?>" alt="" id="profileAvatarPreview">
                 <?php else: ?>
                 <div class="profile-avatar-empty" id="profileAvatarEmpty"><i class="fas fa-user"></i></div>
                 <img src="" alt="" id="profileAvatarPreview" style="display:none">

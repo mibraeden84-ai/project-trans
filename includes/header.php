@@ -134,7 +134,7 @@ if (!empty($_SERVER['HTTP_REFERER'])) {
         <?php if (isLoggedIn()): ?>
         <div class="app-sidebar-user">
             <?php if (!empty($_SESSION['user_image'])): ?>
-            <img src="<?= escape($_SESSION['user_image']) ?>" alt="" class="app-sidebar-user-avatar">
+            <img src="/<?= ltrim(escape($_SESSION['user_image']), '/') ?>" alt="" class="app-sidebar-user-avatar">
             <?php else: ?>
             <span class="app-sidebar-user-avatar app-sidebar-user-avatar-empty"><i class="fas fa-user"></i></span>
             <?php endif; ?>
@@ -190,7 +190,7 @@ if (!empty($_SERVER['HTTP_REFERER'])) {
                 <?php if (isLoggedIn()): ?>
                 <a href="index.php?page=profile" class="nav-user-pill">
                     <?php if (!empty($_SESSION['user_image'])): ?>
-                    <img src="<?= escape($_SESSION['user_image']) ?>" alt="" class="nav-user-avatar">
+                    <img src="/<?= ltrim(escape($_SESSION['user_image']), '/') ?>" alt="" class="nav-user-avatar">
                     <?php else: ?>
                     <span class="nav-user-avatar nav-user-avatar-empty"><i class="fas fa-user"></i></span>
                     <?php endif; ?>

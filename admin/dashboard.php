@@ -1833,7 +1833,7 @@ if (isAdmin()) {
                     <?php endif; ?>
                     <div class="user header-user-pill">
                         <?php if (!empty($_SESSION['user_image'])): ?>
-                        <img src="../<?= escape($_SESSION['user_image']) ?>" alt="" class="user-avatar">
+                        <img src="/<?= ltrim(escape($_SESSION['user_image']), '/') ?>" alt="" class="user-avatar">
                         <?php else: ?>
                         <span class="user-avatar user-avatar-empty"><i class="fas fa-user"></i></span>
                         <?php endif; ?>
