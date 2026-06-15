@@ -89,8 +89,32 @@ function renderEnsureBootstrapMarker(PDO $pdo): void {
     );
 }
 
+function renderRunMigrations(PDO $pdo): void {
+    $migrations = [
+        "CREATE TABLE IF NOT EXISTS deletion_requests (
+            id SERIAL PRIMARY KEY,
+            file_type VARCHAR(20) NOT NULL,
+            file_id INTEGER NOT NULL,
+            file_name VARCHAR(255) DEFAULT NULL,
+            requested_by INTEGER REFERENCES users(id) ON DELETE CASCADE,
+            status VARCHAR(20) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
+            reviewed_by INTEGER REFERENCES users(id) ON DELETE SET NULL,
+            reviewed_at TIMESTAMP DEFAULT NULL,
+            created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+        )",
+    ];
+    foreach ($migrations as $sql) {
+        try {
+            $pdo->exec($sql);
+        } catch (Throwable $e) {
+            fwrite(STDERR, "[render-init] Migration failed: " . $e->getMessage() . "\n");
+        }
+    }
+}
+
 $markerExists = renderTableExists($pdo, 'app_bootstrap_state');
 if ($markerExists) {
+    renderRunMigrations($pdo);
     fwrite(STDOUT, "[render-init] Bootstrap marker found. Skipping schema load.\n");
     exit(0);
 }
@@ -104,6 +128,7 @@ foreach ($coreTables as $tableName) {
 }
 
 if ($coreTableCount === count($coreTables)) {
+    renderRunMigrations($pdo);
     renderEnsureBootstrapMarker($pdo);
     fwrite(STDOUT, "[render-init] Existing database detected. Marker created without re-seeding.\n");
     exit(0);
