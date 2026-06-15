@@ -570,9 +570,9 @@ function adminSaveImageUpload(string $field, string $targetDir, string $prefix):
     return ['ok' => true, 'path' => $relativeDir . '/' . $name];
 }
 
-// Handle bulk file deletion (AJAX) — soft delete
+// Handle bulk file deletion (AJAX) — only admins (editors must use single-file approval flow)
 if (isset($_POST['bulk_delete']) && isset($_POST['type']) && isset($_POST['ids'])) {
-    if (!canDelete()) { echo json_encode(['success'=>false,'message'=>'Permission denied']); exit; }
+    if (!isAdmin()) { echo json_encode(['success'=>false,'message'=>'Only admins can bulk delete']); exit; }
     $type = $_POST['type'];
     $ids = array_map('intval', (array)$_POST['ids']);
     $tableMap = ['config' => 'config_files', 'firmware' => 'firmware_files', 'manual' => 'manuals', 'software' => 'software_files'];
@@ -591,7 +591,7 @@ if (isset($_POST['bulk_delete']) && isset($_POST['type']) && isset($_POST['ids']
     exit;
 }
 
-// Handle file deletion (AJAX + regular) — soft delete
+// Handle file deletion (AJAX + regular) — admin deletes immediately, editor creates pending request
 if (isset($_GET['delete']) && isset($_GET['type'])) {
     if (!canDelete()) { 
         if (isset($_GET['ajax'])) { echo json_encode(['success'=>false]); exit; }
@@ -601,21 +601,63 @@ if (isset($_GET['delete']) && isset($_GET['type'])) {
     $type = $_GET['type'];
     $tableMap = ['config' => 'config_files', 'firmware' => 'firmware_files', 'manual' => 'manuals', 'software' => 'software_files'];
     $deleted = false;
+    $pending = false;
     if (isset($tableMap[$type])) {
         $file = $db->fetchOne("SELECT name, file_path FROM {$tableMap[$type]} WHERE id = ?", [$id]);
         if ($file) {
-            $db->query("UPDATE {$tableMap[$type]} SET status = 'deleted' WHERE id = ?", [$id]);
-            adminDeleteUploadIfUnused($db, $file['file_path'] ?? null);
-            $deleted = true;
-            setFlash("Deleted " . $file['name']);
+            if (isAdmin()) {
+                $db->query("UPDATE {$tableMap[$type]} SET status = 'deleted' WHERE id = ?", [$id]);
+                adminDeleteUploadIfUnused($db, $file['file_path'] ?? null);
+                $deleted = true;
+                setFlash("Deleted " . $file['name']);
+            } else {
+                $db->insert("INSERT INTO deletion_requests (file_type, file_id, file_name, requested_by, status) VALUES (?, ?, ?, ?, 'pending')",
+                    [$type, $id, $file['name'], (int)($_SESSION['user_id'] ?? 0)]);
+                $pending = true;
+                setFlash("Deletion request sent for admin approval");
+            }
         }
     }
     if (isset($_GET['ajax'])) {
-        echo json_encode(['success' => $deleted]);
+        echo json_encode(['success' => $deleted || $pending, 'pending' => $pending]);
         exit;
     }
     $tabMap = ['config' => 'configs', 'firmware' => 'firmware', 'manual' => 'manuals', 'software' => 'software'];
     header('Location: dashboard.php#' . ($tabMap[$type] ?? 'add-file'));
+    exit;
+}
+
+// Handle admin approval of deletion requests
+if (isset($_GET['approve_delete']) && isset($_GET['request_id']) && isAdmin()) {
+    $reqId = (int)$_GET['request_id'];
+    $req = $db->fetchOne("SELECT * FROM deletion_requests WHERE id = ? AND status = 'pending'", [$reqId]);
+    if ($req) {
+        $tableMap = ['config' => 'config_files', 'firmware' => 'firmware_files', 'manual' => 'manuals', 'software' => 'software_files'];
+        $type = $req['file_type'];
+        if (isset($tableMap[$type])) {
+            $file = $db->fetchOne("SELECT file_path FROM {$tableMap[$type]} WHERE id = ?", [$req['file_id']]);
+            if ($file) {
+                $db->query("UPDATE {$tableMap[$type]} SET status = 'deleted' WHERE id = ?", [$req['file_id']]);
+                adminDeleteUploadIfUnused($db, $file['file_path'] ?? null);
+            }
+        }
+        $db->query("UPDATE deletion_requests SET status = 'approved', reviewed_by = ?, reviewed_at = NOW() WHERE id = ?",
+            [(int)($_SESSION['user_id'] ?? 0), $reqId]);
+        setFlash("Deletion approved: " . $req['file_name']);
+    }
+    header('Location: dashboard.php#pending-approvals');
+    exit;
+}
+
+if (isset($_GET['reject_delete']) && isset($_GET['request_id']) && isAdmin()) {
+    $reqId = (int)$_GET['request_id'];
+    $req = $db->fetchOne("SELECT * FROM deletion_requests WHERE id = ? AND status = 'pending'", [$reqId]);
+    if ($req) {
+        $db->query("UPDATE deletion_requests SET status = 'rejected', reviewed_by = ?, reviewed_at = NOW() WHERE id = ?",
+            [(int)($_SESSION['user_id'] ?? 0), $reqId]);
+        setFlash("Deletion rejected: " . $req['file_name']);
+    }
+    header('Location: dashboard.php#pending-approvals');
     exit;
 }
 
@@ -1771,6 +1813,7 @@ if (isAdmin()) {
         <?php if (isAdmin() || canViewTab('software')): ?><a href="#" onclick="return showTab('software')"><i class="fas fa-gear"></i> Software</a><?php endif; ?>
         <?php if (isAdmin() || canViewTab('brands-models') || canManageBrands() || canManageModels()): ?><a href="#" onclick="return showTab('brands-models')"><i class="fas fa-sitemap"></i> Brands &amp; Models</a><?php endif; ?>
         <?php if (isAdmin()): ?><a href="#" onclick="return showTab('users')"><i class="fas fa-users"></i> Users</a><?php endif; ?>
+        <?php if (isAdmin()): ?><a href="#" onclick="return showTab('pending-approvals')"><i class="fas fa-clock"></i> Pending Approvals</a><?php endif; ?>
         <hr class="sidebar-divider">
         <?php if (!empty($_SESSION['_impersonator_id'])): ?>
         <a href="../logout.php?switch_back=1"><i class="fas fa-rotate-left"></i> Back to Admin</a>
@@ -1819,6 +1862,7 @@ if (isAdmin()) {
             <?php if (isAdmin() || canViewTab('software')): ?><button class="tab-btn" onclick="showTab('software')">Software</button><?php endif; ?>
             <?php if (isAdmin() || canViewTab('brands-models') || canManageBrands() || canManageModels()): ?><button class="tab-btn" onclick="showTab('brands-models')">Brands &amp; Models</button><?php endif; ?>
             <?php if (isAdmin()): ?><button class="tab-btn" onclick="showTab('users')">Users</button><?php endif; ?>
+            <?php if (isAdmin()): ?><button class="tab-btn" onclick="showTab('pending-approvals')">Pending Approvals</button><?php endif; ?>
         </div>
 
         <div id="tab-admin-control" class="tab-content">
@@ -3055,6 +3099,43 @@ if (isAdmin()) {
         </div>
     </div>
 
+    <?php
+    $pendingRequests = $db->fetchAll(
+        "SELECT dr.*, u.username AS requester_name
+         FROM deletion_requests dr
+         LEFT JOIN users u ON u.id = dr.requested_by
+         WHERE dr.status = 'pending'
+         ORDER BY dr.created_at DESC"
+    );
+    ?>
+    <div id="tab-pending-approvals" class="tab-content">
+        <div class="section">
+            <h2><i class="fas fa-clock"></i> Pending Deletion Approvals</h2>
+            <?php flash(); ?>
+            <?php if (empty($pendingRequests)): ?>
+                <div class="empty">No pending deletion requests.</div>
+            <?php else: ?>
+            <table>
+                <thead><tr><th>File Name</th><th>Type</th><th>Requested By</th><th>Requested At</th><th>Actions</th></tr></thead>
+                <tbody>
+                <?php foreach ($pendingRequests as $req): ?>
+                    <tr>
+                        <td><?= escape($req['file_name'] ?? '') ?></td>
+                        <td><?= escape($req['file_type'] ?? '') ?></td>
+                        <td><?= escape($req['requester_name'] ?? 'Unknown') ?></td>
+                        <td><?= escape($req['created_at'] ?? '') ?></td>
+                        <td>
+                            <a href="dashboard.php?approve_delete=1&request_id=<?= (int)$req['id'] ?>" class="btn btn-primary btn-sm"><i class="fas fa-check"></i> Approve</a>
+                            <a href="dashboard.php?reject_delete=1&request_id=<?= (int)$req['id'] ?>" class="btn btn-danger btn-sm"><i class="fas fa-times"></i> Reject</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+                </tbody>
+            </table>
+            <?php endif; ?>
+        </div>
+    </div>
+
     <script>
         function openEditModalFromJson(json) {
             var data = JSON.parse(json);
@@ -3112,10 +3193,14 @@ if (isAdmin()) {
                 })
                 .then(function(d) {
                     if (d.success) {
-                        var btn = document.querySelector('[data-del-id="' + id + '"][data-del-type="' + type + '"]');
-                        if (btn) { var tr = btn.closest('tr'); if (tr) tr.remove(); }
-                        applyAdminSearch();
-                        showToast('File deleted from admin and user library.', 'success');
+                        if (d.pending) {
+                            showToast('Deletion request sent for admin approval.', 'success');
+                        } else {
+                            var btn = document.querySelector('[data-del-id="' + id + '"][data-del-type="' + type + '"]');
+                            if (btn) { var tr = btn.closest('tr'); if (tr) tr.remove(); }
+                            applyAdminSearch();
+                            showToast('File deleted from admin and user library.', 'success');
+                        }
                     } else {
                         showToast('Delete failed.', 'error');
                     }

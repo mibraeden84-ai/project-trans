@@ -308,6 +308,19 @@ WHERE NOT EXISTS (
     SELECT 1 FROM common_settings c WHERE c.category = v.category AND c.name = v.name
 );
 
+-- Deletion requests: when an editor deletes a file, it requires admin approval
+CREATE TABLE IF NOT EXISTS deletion_requests (
+    id SERIAL PRIMARY KEY,
+    file_type VARCHAR(20) NOT NULL,
+    file_id INTEGER NOT NULL,
+    file_name VARCHAR(255) DEFAULT NULL,
+    requested_by INTEGER REFERENCES users(id) ON DELETE CASCADE,
+    status VARCHAR(20) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'rejected')),
+    reviewed_by INTEGER REFERENCES users(id) ON DELETE SET NULL,
+    reviewed_at TIMESTAMP DEFAULT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
 INSERT INTO users (username, password_hash, email, role, is_active) VALUES
 ('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin@translink.et', 'admin', 1),
 ('user', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'user@example.com', 'user', 1)
