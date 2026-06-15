@@ -74,7 +74,7 @@ $mimeTypes = [
 $mime = $mimeTypes[$ext] ?? 'application/octet-stream';
 
 $encodedName = rawurlencode($file['name']);
-header('Content-Type: application/octet-stream');
+header('Content-Type: ' . $mime);
 header('Content-Disposition: attachment; filename*=UTF-8\'\'' . $encodedName);
 header('Content-Length: ' . filesize($filePath));
 header('X-Content-Type-Options: nosniff');
