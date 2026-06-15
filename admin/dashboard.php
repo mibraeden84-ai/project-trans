@@ -2472,60 +2472,75 @@ if (isAdmin()) {
                             system_type: document.querySelector('select[name="system_type"]') ? document.querySelector('select[name="system_type"]').value : ''
                         };
 
-                        (function uploadNextChunk(index) {
-                            if (index >= totalChunks) {
-                                setUploadProgress(99, 'Finalizing publish...');
-                                var formData = new FormData();
-                                formData.append('upload_id', uid);
-                                formData.append('total_chunks', String(totalChunks));
-                                var xhr = new XMLHttpRequest();
-                                xhr.open('POST', '../chunk_upload.php?action=complete', true);
-                                xhr.onload = function() {
-                                    var data = null;
-                                    try { data = JSON.parse(xhr.responseText || '{}'); } catch(e) {}
-                                    if (xhr.status >= 200 && xhr.status < 300 && data && data.success) {
-                                        setUploadBusy(false);
-                                        setUploadProgress(100, 'Published to user library');
-                                        setUploadStatus(data.message || 'Upload complete.', false);
-                                        if (typeof showToast === 'function') showToast(data.message || 'Upload complete.', 'success', 3200);
-                                        window.setTimeout(function() {
-                                            window.location.href = 'dashboard.php#' + (type === 'config' ? 'configs' : type === 'firmware' ? 'firmware' : type === 'manual' ? 'manuals' : 'software');
-                                        }, 900);
-                                    } else {
+                        var completed = 0;
+                        var failed = false;
+                        var maxConcurrent = 4;
+                        var nextToSend = 0;
+
+                        function sendNextBatch() {
+                            while (nextToSend < totalChunks && (nextToSend - completed) < maxConcurrent && !failed) {
+                                var idx = nextToSend++;
+                                var start = idx * chunkSize;
+                                var end = Math.min(start + chunkSize, file.size);
+                                uploadChunk(uid, file, start, end, idx, totalChunks, metadata)
+                                    .then(function() {
+                                        completed++;
+                                        var pct = Math.round((completed / totalChunks) * 98);
+                                        setUploadProgress(pct, 'Uploaded ' + completed + ' of ' + totalChunks + ' chunks...');
+                                        if (completed === totalChunks && !failed) {
+                                            finalize();
+                                        } else {
+                                            sendNextBatch();
+                                        }
+                                    })
+                                    .catch(function(err) {
+                                        if (failed) return;
+                                        failed = true;
+                                        var msg = 'Chunk ' + (idx + 1) + ' failed. ' + (err.message || 'Please try again.');
                                         setUploadBusy(false);
                                         setUploadProgress(0, 'Preparing upload...');
-                                        var msg = (data && data.message) ? data.message : 'Upload failed. Please try again.';
                                         setUploadStatus(msg, true);
                                         if (typeof showToast === 'function') showToast(msg, 'error', 4200);
-                                    }
-                                };
-                                xhr.onerror = function() {
-                                    setUploadBusy(false);
-                                    setUploadProgress(0, 'Preparing upload...');
-                                    setUploadStatus('Upload failed. Please try again.', true);
-                                    if (typeof showToast === 'function') showToast('Upload failed. Please try again.', 'error', 4200);
-                                };
-                                xhr.send(formData);
-                                return;
+                                    });
                             }
+                        }
 
-                            var start = index * chunkSize;
-                            var end = Math.min(start + chunkSize, file.size);
-                            var pct = Math.round((index / totalChunks) * 98);
-                            setUploadProgress(pct, 'Uploading chunk ' + (index + 1) + ' of ' + totalChunks + '...');
-
-                            uploadChunk(uid, file, start, end, index, totalChunks, metadata)
-                                .then(function() {
-                                    uploadNextChunk(index + 1);
-                                })
-                                .catch(function(err) {
-                                    var msg = 'Chunk ' + (index + 1) + ' failed. ' + (err.message || 'Please try again.');
+                        function finalize() {
+                            setUploadProgress(99, 'Finalizing publish...');
+                            var formData = new FormData();
+                            formData.append('upload_id', uid);
+                            formData.append('total_chunks', String(totalChunks));
+                            var xhr = new XMLHttpRequest();
+                            xhr.open('POST', '../chunk_upload.php?action=complete', true);
+                            xhr.onload = function() {
+                                var data = null;
+                                try { data = JSON.parse(xhr.responseText || '{}'); } catch(e) {}
+                                if (xhr.status >= 200 && xhr.status < 300 && data && data.success) {
+                                    setUploadBusy(false);
+                                    setUploadProgress(100, 'Published to user library');
+                                    setUploadStatus(data.message || 'Upload complete.', false);
+                                    if (typeof showToast === 'function') showToast(data.message || 'Upload complete.', 'success', 3200);
+                                    window.setTimeout(function() {
+                                        window.location.href = 'dashboard.php#' + (type === 'config' ? 'configs' : type === 'firmware' ? 'firmware' : type === 'manual' ? 'manuals' : 'software');
+                                    }, 900);
+                                } else {
                                     setUploadBusy(false);
                                     setUploadProgress(0, 'Preparing upload...');
+                                    var msg = (data && data.message) ? data.message : 'Upload failed. Please try again.';
                                     setUploadStatus(msg, true);
                                     if (typeof showToast === 'function') showToast(msg, 'error', 4200);
-                                });
-                        })(0);
+                                }
+                            };
+                            xhr.onerror = function() {
+                                setUploadBusy(false);
+                                setUploadProgress(0, 'Preparing upload...');
+                                setUploadStatus('Upload failed. Please try again.', true);
+                                if (typeof showToast === 'function') showToast('Upload failed. Please try again.', 'error', 4200);
+                            };
+                            xhr.send(formData);
+                        }
+
+                        sendNextBatch();
                     });
                 }
 
