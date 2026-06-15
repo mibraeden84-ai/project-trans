@@ -1,0 +1,26 @@
+previews:
+  generation: off
+
+services:
+  - type: web
+    runtime: docker
+    name: translink-file-library
+    plan: free
+    healthCheckPath: /healthz.php
+    envVars:
+      - key: DB_DRIVER
+        value: pgsql
+      - key: DATABASE_URL
+        sync: false
+      - key: STORAGE_DRIVER
+        value: local
+      - key: DEBUG
+        value: "false"
+      - key: DB_PERSISTENT
+        value: "true"
+      - key: SEARCH_PAGE_SIZE
+        value: "24"
+      - key: ADMIN_TABLE_PAGE_SIZE
+        value: "200"
+      - key: JWT_SECRET
+        generateValue: true

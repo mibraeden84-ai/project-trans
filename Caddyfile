@@ -1,0 +1,16 @@
+{
+	# Set an email for Let's Encrypt notifications if you want:
+	# email you@example.com
+}
+
+${SITE_DOMAIN} {
+	encode zstd gzip
+	header {
+		# Let PHP know original scheme for secure cookies
+		X-Forwarded-Proto https
+	}
+
+	# Proxy to the PHP/Apache container
+	reverse_proxy web:80
+}
+

@@ -1,0 +1,67 @@
+Translink GPS Library - PHP + PostgreSQL Website
+================================================
+
+Enterprise-grade GPS configuration and firmware library management.
+
+FEATURES
+- Device brand/model library for Teltonika, GalileoSky, StarLink, and Dash Cam
+- PostgreSQL full-text search with GIN indexes
+- Upload files from the library and admin dashboard
+- Firmware, software, manual, and config file management
+- Admin/editor/user role support
+- Download tracking with counters
+- Responsive, mobile-first design
+
+REQUIREMENTS
+- PHP 8.0+ with pdo_pgsql enabled
+- PostgreSQL 12+ running on port 5432
+- A PostgreSQL user that can create the translink_gps database, or an existing translink_gps database owned by that user
+- 100MB+ storage for uploads
+
+DATABASE CONFIGURATION
+config.php reads these environment variables when present:
+- DB_HOST, default 127.0.0.1
+- DB_PORT, default 5432
+- DB_NAME, default translink_gps
+- DB_USER, default postgres
+- DB_PASS, default empty
+- DB_MAINTENANCE_DB, default postgres
+
+QUICK START (Windows with XAMPP PHP)
+1. Install/start PostgreSQL.
+2. Enable pdo_pgsql in C:\xampp\php\php.ini:
+   extension=pdo_pgsql
+3. Restart any PHP server process after editing php.ini.
+4. From this website folder, run:
+   C:\xampp\php\php.exe install.php
+5. Start the dev server:
+   C:\xampp\php\php.exe -S localhost:8000
+6. Open:
+   http://localhost:8000
+
+QUICK START (Linux/Mac)
+1. Start PostgreSQL:
+   sudo systemctl start postgresql
+2. Install/enable the PHP PostgreSQL PDO extension.
+3. From this website folder, run:
+   php install.php
+4. Start the dev server:
+   php -S 0.0.0.0:8000
+
+DEFAULT ADMIN
+Username: admin
+Password: password
+
+Change the default password after first login.
+
+FILE STRUCTURE
+website/
+- index.php                 Entry point / router
+- config.php                PostgreSQL database config
+- install.php               PostgreSQL installer
+- schema.sql                PostgreSQL schema + seed data
+- upload_handler.php        AJAX upload endpoint
+- check.php                 System health check
+- includes/database.php     PDO PostgreSQL wrapper
+- admin/dashboard.php       Dashboard + CRUD upload/manage
+- uploads/                  Stored configs, firmware, manuals, software, user images

@@ -1,0 +1,1613 @@
+Parameter (Dec),Description,Value
+0001,Unit ID selection,0
+0002,High communication rate,0
+0003,Keep GNSS on after ignition was turned off,5
+0004,Odometer source,0
+0005,Speed source,2
+0006,Voltage message report,0
+0007,Retransmit count,5
+0008,Retransmit delay,60
+0009,Resume logger after power-up,1
+0010,Odometer value,267205
+0011,Diagnostic report filter,7
+0012,iButton disconnect delay,20
+0014,Ignition on transition time,1
+0015,Ignition off transition time,1
+0016,Alarm communication time interval,0
+0017,Alarm communication errors counter,0
+0018,Alarm serial number,0
+0019,Alarm setting,0
+0020,Periodic Alarm status message report selection,0
+0021,Modem off when idle,0
+0022,Automatic tracking interval,10
+0023,Modem reset limit,0
+0024,Wait for date and time,0
+0025,Immobilizer: Automatic arm,0
+0026,Immobilizer: Output,0
+0027,Maximum time using backup battery,0
+0028,Acknowledge timeout,60
+0029,Tow detection: Check interval,0
+0030,Tow detection: Check duration,0
+0031,Tow detection: Radius,0
+0033,Server SMS number,
+0034,Incoming SMS filter,
+0035,Simple SMS primary phone number,
+0036,Simple SMS secondary phone number,
+0037,Speed dial number for Port D / call button #4,
+0038,Speed dial number for Port E / call button #5,
+0039,Speed dial number for call button #1,
+0040,Speed dial number for call button #2,
+0041,Speed dial number for call button #3,
+0043,Voice options,
+0044,Ringtone type,
+0045,Ringtone volume,
+0046,Microphone volume,
+0047,Speaker volume,
+0049,Primary server IP,193.193.165.165
+0050,Primary server port,20220
+0051,Secondary server IP,
+0052,Secondary server port,0
+0053,Primary server protocol,0
+0054,Secondary server protocol,0
+0059,Firmware lock code,
+0060,Firmware temporary unlock,
+0061,SIM card PIN Code,N/A
+0062,IMEI,867747076613890
+0063,IMSI,636020131973100
+0064,ICCID,89251020001319731003
+0065,VSS prescaler,0
+0066,VSS Odometer,0
+0080,GPS Type,7
+0081,Fleet Switch On,
+0082,GNSS Ignition off filter,300
+0083,GNSS Smart Off,
+0084,GNSS Assistance,0
+0087,GNSS Max. allowed accuracy,0
+0088,GNSS Odometer factor,100
+0089,GNSS Odometer,267205
+0090,GNSS Maximum time for fix,150
+0091,GNSS Odometer v1,
+0092,Max PDOP,
+0093,GNSS Max allowed HDOP,40
+0094,Max VDOP,
+0095,GNSS Source,1
+0096,Network technology,255
+0097,Data connection APN,etc.com
+0098,Data connection user name,etc
+0099,Data connection password,etc
+0100,Modem overrides,0
+0101,Automatic APN selection,
+0102,SIM application toolkit,1
+0103,Non-Aggressive GPRS,0
+0104,Network category,
+0105,Manual network selection,0
+0106,TCP keep-alive interval,5
+0107,GPRS authentication mode,0
+0108,IPv4 / IPv6,1
+0109,Cat-M band mask,
+0110,Forbidden networks,
+0113,Event config: Location report,1
+0114,Event config: Diagnostic report,0
+0115,Event config: eConnect,
+0116,Event config: Ignition turned on,513
+0117,Event config: Ignition turned off,1
+0118,Event config: Speed limit,513
+0119,Event config: Entered geo-zone,0
+0120,Event config: Exited geo-zone,0
+0121,Event config: Car battery disconnected,1
+0122,Event config: Car battery reconnected,1
+0123,Event config: Internal backup battery is low,1
+0124,Event config: Voltage below threshold,0
+0125,Event config: Voltage above threshold,1
+0126,Event config: Digital input low,0
+0127,Event config: Digital input high,0
+0128,Event config: iButton changed,1
+0129,Event config: External alarm state changed,0
+0130,Event config: Tracking,0
+0131,Event config: Immobilizer: Arm,1
+0132,Event config: Immobilizer: Disarm,1
+0133,Event config: Immobilizer: Wrong code,1
+0134,Event config: Idle excessive,513
+0135,Event config: Network changed,1
+0136,Event config: Engine on,1
+0137,Event config: Engine off,1
+0138,Event config: Tow detection,1
+0139,Event config: Motorcycle alarm: Alarm,
+0140,Event config: Motorcycle alarm: Armed,
+0141,Event config: Motorcycle alarm: Disarmed,
+0142,Event config: Motorcycle alarm: Valet mode,
+0143,Event config: Motorcycle fall detected,
+0144,Event config: Motorcycle accident detected,
+0145,Event config: External device,1
+0146,Event config: Drive destination selected,0
+0147,Event config: Immobilizer: Violation,1
+0148,Event config: Panic,1
+0149,Event config: Voice callback,
+0150,Event config: Voice call started,
+0151,Event config: Voice call ended,
+0152,Event config: Drive rule occurred,0
+0153,Event config: Accident detected,513
+0154,Event config: Jamming detected,1
+0155,Event config: Jamming ended,0
+0156,Event config: Movement detected,0
+0157,Event config: End of movement detected,0
+0158,Event config: iButton attached,0
+0159,Event config: iButton detached,0
+0161,Hourly charge: Max. voltage,0
+0162,Hourly charge: Start hour,0
+0163,Hourly charge: End hour,0
+0164,Max Battery Voltage,
+0165,Charge limit: Max. duration,60
+0166,Auto charge: Min. input voltage,0
+0167,Auto charge: Max. voltage,0
+0176,Dynamic time format,7
+0177,Dynamic event structure,"#EDT#,#EID#,#PDT#,#IMEI#,#ODOD#,#TVI#,#CFL#,#CFL2#,#DUR#,#TDUR#,#STRT#,#BATC#,#BATH#,#ALTD#,#LAT#,#LONG#,#SPDK#,#HEAD#,#SAT#,#PDOP#,#JAM#,#IARM#,#DAL#,#DID#,#IGN#,#ENG#,#DRV#,#IN1#,#IN2#,#OUT1#,#OUT2#,#VBAT#,#EDV1#,#EDV2#,#CV1#,#CV2#"
+0178,Message header,$
+0179,Message footer,
+0180,Confirmation reference,0
+0181,Behavior of invalid dynamic parameters,0
+0182,Protocol format,0
+0184,User defined dynamic field,
+0185,Full dynamic mode,0
+0186,Local time zone,
+0187,Shared secret,
+0188,Satellite dynamic structure,"#EID#,#LAT#,#LONG#,#SPD#,#HEAD#"
+0189,Satellite message delay,300
+0190,Special transmission method,0
+0245,Modem Version,EG915UEUABR03A01M08_01.200.01.200
+0249,Firmware Version,2.45c
+0252,Hardware Version,StarLink-C1 G91e4 CL
+0272,Motorcycle alarm: Passive arm time,
+0273,Motorcycle alarm: Re-arm time,
+0274,Motorcycle alarm: Modem off when armed (hours),
+0275,Motorcycle alarm: Maximum valet time,
+0276,Motorcycle alarm: Settings,
+0277,Motorcycle alarm: SMS message,
+0278,Motorcycle alarm: PIN Code,
+0279,Motorcycle alarm: Remote controls,
+0280,Motorcycle alarm: Receiver on after arm,
+0281,Motorcycle alarm: Ignore RC keep-alive after arming,
+0282,Motorcycle alarm: Shock sensor sensitivity,
+0283,Motorcycle alarm: RC disarmed signal threshold,
+0284,Motorcycle alarm: RC armed signal threshold,
+0285,Motorcycle alarm: RC keep-alive interval,
+0286,Motorcycle alarm: Receiver on after shock,
+0291,Mot. Accident: Deceleration,
+0292,Mot. Accident: Minimum speed,
+0293,Mot. Accident: Minimum samples,
+0297,Mot. Fall: Stabilization time,
+0298,Mot. Accident: Angle,
+0299,Mot. Fall: Angle,
+0304,Motorcycle alarm: Violation setting,
+0305,Motorcycle alarm: Violation duration,
+0306,Motorcycle alarm: Trigger mask,
+0307,Motorcycle alarm: Maximum number of alarm cycles,
+0308,Motorcycle alarm: Max. alarm cycles per trigger,
+0309,Motorcycle alarm: Manual command,
+0310,Motorcycle alarm: Reset alarm cycle count,
+0311,Motorcycle alarm: Maximum number of server events,
+0312,Motorcycle alarm: Modem off when armed (minutes),
+0313,Motorcycle alarm: Modem turn on interval (minutes),
+0314,Motorcycle alarm: Modem turn on duration (minutes),
+0315,Motorcycle alarm: Shock sensor sensitivity for modem,
+0316,Motorcycle alarm: Angle change,0
+0317,Motorcycle alarm: Ignition disarm duration,
+0318,Motorcycle alarm: Turn receiver off when Ignition is on,
+0360,StarBus: Distance for event detection,
+0361,StarBus: Distance for remote selection,
+0362,StarBus: Stopped speed,
+0363,StarBus: Moving speed,
+0368,eCall: Auto detect values from OBD2,
+0369,eCall: Phone number,
+0370,eCall: VIN number,
+0371,eCall: Propulsion stores,
+0372,eCall: Vehicle class,
+0373,eCall: Total occupants,
+0374,eCall: Test mode,
+0375,eCall: SMS phone number,
+0376,eCall: SMS format,
+0384,Internal eSafe vehicle type,1
+0385,Internal eSafe automatic accident report (Ignition On),0
+0386,Internal eSafe automatic accident report (Ignition Off),0
+0388,Internal eSafe road direction,0
+0389,Internal eSafe accident detection (Ignition On),1
+0390,Internal eSafe accident detection (Ignition Off),0
+0400,CAN Baud rate,0
+0401,CAN Odo: Message ID,0
+0402,CAN Odo: Filter mask,0
+0403,CAN Odo: Filter value,0
+0404,CAN Odo: Start bit,0
+0405,CAN Odo: Data length,0
+0406,CAN Odo: Divisor,0
+0407,CAN Odo: Settings,0
+0408,CAN Odo: Multiplier,0
+0409,CAN Odo: Online,
+0410,CAN Odo: Request,
+0415,CAN-FD Baud rate,
+0416,Internal RS232: Message format,
+0417,Internal RS232: Device ID,
+0418,Internal RS232: Baud rate,
+0419,Internal RS232: Timeout,
+0420,Internal RS232: Start character,
+0421,Internal RS232: End character,
+0422,Internal RS232: Maximum length,
+0423,Internal RS232: Settings,
+0424,Internal RS232: Skip characters,
+0425,Internal RS232: Skip up to character,
+0426,Internal RS232: Message length,
+0427,Internal RS232: Message end character,
+0432,AIS140: Vehicle number,
+0433,AIS140: Primary server IP,
+0434,AIS140: Primary server port,
+0435,AIS140: Secondary server IP,
+0436,AIS140: Secondary server port,
+0437,AIS140: Server SMS,
+0438,AIS140: Ignition on interval,
+0439,AIS140: Ignition off interval,
+0440,AIS140: Health message interval,
+0441,AIS140: Emergency server IP,
+0442,AIS140: Emergency server port,
+0443,AIS140: Emergency server SMS,
+0444,AIS140: Emergency interval,
+0445,AIS140: Low battery threshold,
+0446,AIS140: Automatic network switch,
+0448,EC2: Data transmission format,0
+0465,Internal eFuel: Device ID,
+0499,eFuel W: Total liters,
+0500,eFuel W: Ignition on interval,
+0501,eFuel W: Ignition on fuel difference,
+0502,eFuel W: Ignition off interval,
+0503,eFuel W: Fuel theft percent,
+0504,eFuel W: Refuel min. percent,
+0506,eFuel W: Paired device #1,
+0507,eFuel W: Paired device #2,
+0512,Keep-alive send character,60
+0513,Keep-alive receive character,62
+0514,Keep GNSS always on,0
+0515,Idle excessive: Condition,0
+0516,Idle excessive: Duration,2
+0517,Idle excessive: Speed,0
+0518,GNSS first fix filter,0
+0519,GNSS 2D/3D filter,0
+0520,Idle excessive: Report,0
+0521,Alternate profile condition,0
+0522,Max. keep-alive errors,5
+0523,Data logger - memory full storage mode,1
+0524,Operator lock,0
+0525,Single SIM card lock,
+0526,Location report condition,0
+0527,Override mode,0
+0528,Input #1/C low transition time,0
+0529,Input #1/C high transition time,0
+0530,Input #2/D low transition time,0
+0531,Input #2/D high transition time,0
+0532,Input #3/E low transition time,0
+0533,Input #3/E high transition time,0
+0534,Input #4/F low transition time,0
+0535,Input #4/F high transition time,0
+0536,Reverse input states,0
+0537,Digital input mask,0
+0538,Pulse detection,0
+0540,Force fast charge,0
+0541,Power lost/restored delay,10
+0542,Minimum main voltage to use digital inputs,0
+0543,Delay after voltage drops below minimum voltage,0
+0544,Main power: Low voltage level,0
+0545,Main power: Low voltage duration,0
+0546,Main power: High voltage level,0
+0547,Main power: High voltage duration,0
+0548,Backup battery: Low voltage level,0
+0549,Backup battery: Low voltage duration,0
+0550,Backup battery: High voltage level,0
+0551,Backup battery: High voltage duration,0
+0552,Ext. Voltage #1: Low voltage level,0
+0553,Ext. Voltage #1: Low voltage duration,0
+0554,Ext. Voltage #1: High voltage level,0
+0555,Ext. Voltage #1: High voltage duration,0
+0556,Ext. Voltage #2: Low voltage level,0
+0557,Ext. Voltage #2: Low voltage duration,0
+0558,Ext. Voltage #2: High voltage level,0
+0559,Ext. Voltage #2: High voltage duration,0
+0560,Speed limit #1: Duration,1
+0561,Speed limit #1: Speed,30
+0562,Speed limit #1: Settings,1
+0563,Speed limit #2: Duration,0
+0564,Speed limit #2: Speed,0
+0565,Speed limit #2: Settings,0
+0566,Speed limit #3: Duration,0
+0567,Speed limit #3: Speed,0
+0568,Speed limit #3: Settings,0
+0569,Speed limit #4: Duration,0
+0570,Speed limit #4: Speed,0
+0571,Speed limit #4: Settings,0
+0572,Speed limit #5: Duration,0
+0573,Speed limit #5: Speed,0
+0574,Speed limit #5: Settings,0
+0575,Engine on detection with Ignition on,0
+0576,Engine state detection method,0
+0577,Engine on voltage,0
+0578,Engine on duration,0
+0579,Engine off voltage,0
+0580,Engine off duration,0
+0581,Engine on speed,0
+0582,Engine off speed,0
+0583,Engine off for stop and go,450
+0584,Driving detection condition,0
+0585,Driving detection speed,0
+0586,Driving start duration,0
+0587,Driving stop duration,0
+0588,Engine hours condition,0
+0589,Engine hours (seconds),11932265
+0590,Jamming detection: Max. Speed,0
+0591,Jamming detection: Settings,0
+0592,Simple SMS enabled,1
+0593,Simple SMS password,password
+0594,Simple SMS dynamic protocol,"Event: #EDSC#; In: #IGN##IN4##IN3##IN2##IN1#; Out: #OUT4##OUT3##OUT2##OUT1#; Alarm: #AST#; LocTime: #PD#/#PM#/#PY# #PH#:#PN#:#PS#; Speed: #SPDK#; Link: http://maps.google.com/?q=#LTPM##LTDD#,#LGPM##LGDD#"
+0595,Maximum SMS parts for one CSMS,1
+0596,Default SMS format,0
+0597,Global SMS daily limit,0
+0598,Server SMS daily limit,0
+0599,Simple SMS daily limit,0
+0600,Simple SMS location on RING,0
+0601,Simple SMS track to sender,0
+0602,Simple SMS additional phone numbers,
+0603,Bluetooth advertise name,
+0604,WiFi Client: Activation,
+0605,Tow detection flags,
+0606,Idle excessive: Repeat,0
+0607,Tow detection: Duration without location,300
+0608,Default drive destination,0
+0609,Drive destination delay,10
+0610,Keyboard display timeout,30
+0611,Immobilizer: Input mask,0
+0612,Immobilizer: Input value,0
+0613,Immobilizer: Multiple input selection,0
+0614,Immobilizer: Violation event delay,0
+0615,Immobilizer: Force send violation event,0
+0616,Immobilizer: Output arming method,0
+0617,Immobilizer: Arm output duration,0
+0618,Immobilizer: Ignition,0
+0619,Use ENet2 relay,0
+0620,Number of digits,4
+0621,Immobilizer: Reminder duration,0
+0622,Code entry format,0
+0623,Allowed destinations,7
+0624,External analog - Measure mode,0
+0625,External analog - Measurement interval,0
+0626,External device data as text (SMS),0
+0627,External device data as text (GPRS),0
+0628,External device events,0
+0629,Removal/Sabotage event duration,0
+0630,Removal/Sabotage sensor condition,0
+0631,Immobilizer: Automatic disarm,0
+0632,Magnetic card: Data length,0
+0633,Magnetic card: Identifier start,0
+0634,Magnetic card: Identifier end,0
+0635,Magnetic card: Identifier,0
+0636,Magnetic card: Code start,0
+0637,Magnetic card: Code end,0
+0638,Code padding,0
+0639,Allow unauthorized passengers,0
+0640,Panic inputs,0
+0641,Panic input states,0
+0642,Panic inputs condition,0
+0643,Panic duration,0
+0644,Long panic duration,0
+0645,Compact trail: Relative fields,0
+0646,Send internal eSafe events on eNet3,1
+0647,Panic key,0
+0648,Geo-zone detection duration,15
+0649,Internal eSafe: Green LED,0
+0650,Internal eSafe: Red LED,0
+0651,Internal eSafe: Buzzer,0
+0652,Immobilizer: Automatic arm after Ignition,0
+0653,Immobilizer: Violation restart,0
+0654,Immobilizer: Violation ignore time,0
+0655,Immobilizer: Violation ignore with Ignition only,0
+0656,Voice call enabled,
+0657,Voice call using Port D,
+0658,Port D active state,
+0659,Voice call using Port E,
+0660,Port E active state,
+0661,Auto answer ring count,
+0662,Delay after call,
+0663,Delay before dial,
+0664,Incoming call filter,
+0665,Incoming call filter (Blocked),
+0666,Call button #4,
+0667,Call button #5,
+0668,Call button #1,
+0669,Call button #2,
+0670,Call button #3,
+0671,Reset embedded eData,
+0672,Canalog settings,
+0673,Canalog data interval,
+0674,Process eData messages,0
+0675,eData parameter to transmit #1,0000
+0676,eData parameter to transmit #2,0000
+0677,eData parameter to transmit #3,0000
+0679,Dynamic Bluetooth value,
+0680,eData event to trigger Custom Event #1,0000
+0681,eData event to trigger Custom Event #2,0000
+0682,eData event to trigger Custom Event #3,0000
+0683,eData event to trigger Custom Event #4,0000
+0684,eData event to trigger Custom Event #5,0000
+0685,eData event to trigger Custom Event #6,0000
+0686,eData event to trigger Custom Event #7,0000
+0687,eData event to trigger Custom Event #8,0000
+0688,Unit automatic reset interval,0
+0689,Unit automatic reset condition,0
+0690,WiFi AP: Password interval,
+0691,Bluetooth receiver,0
+0692,Beacon duplicates,0
+0693,Beacon transmit interval,0
+0694,iBeacon major filter,0
+0695,iBeacon minor filter,0
+0696,eData event to trigger Custom Event #9,0000
+0697,eData event to trigger Custom Event #10,0000
+0698,eData event to trigger Custom Event #11,0000
+0699,eData event to trigger Custom Event #12,0000
+0700,eData event to trigger Custom Event #13,0000
+0701,eData event to trigger Custom Event #14,0000
+0702,eData event to trigger Custom Event #15,0000
+0703,eData event to trigger Custom Event #16,0000
+0704,Jamming detection: Delay,5
+0705,GNSS Odometer condition,0
+0706,Debug log settings,
+0707,Maximum LIN errors,0
+0708,Maximum ENet2 errors,0
+0709,Tow detection: Shock level,0
+0710,eConnect: Group ID,
+0711,Logger size limit,0
+0712,iButton data length,10
+0713,Cellular location min. interval,0
+0714,Immobilizer: Arm during violation,0
+0715,Allow modem to update firmware,0
+0716,Current location transmission,0
+0717,Send location to external devices,255
+0718,Bluetooth advertising,0
+0719,Tow detection condition,0
+0720,Number of shock pulses,5
+0721,Tilt Duration,
+0722,Moving Min X,
+0723,Moving Min Y,
+0724,Moving Min Z,
+0725,Moving condition,
+0726,Stopped Min X,
+0727,Stopped Min Y,
+0728,Stopped Min Z,
+0729,Stopped condition,
+0730,Movement duration,0
+0731,GNSS on duration after Stop,0
+0732,Modem on duration after stop,0
+0733,GNSS state while moving,0
+0734,Modem state while moving,0
+0735,Moving/Stopped condition,0
+0736,Automatic tracking: Minimum duration,0
+0737,Automatic tracking: Maximum duration,0
+0738,Automatic tracking: Radius,0
+0740,Vibration: Condition,0
+0741,Vibration: Level,0
+0742,Vibration: Duration,0
+0743,Force transmit of iButton data,0
+0744,eFlash event mapping,0
+0745,Immobilizer automatic disarm condition,0
+0746,Ignition detection,
+0747,Removal/Sabotage event sensitivity,1
+0748,Remote panic,0
+0749,Low battery remote voltage,0
+0750,Motorcycle: Extended disarm event,
+0751,Keep LEDs turned OFF,0
+0757,Vehicle Identification Number,
+0764,Sync server account,
+0765,Sync server,
+0768,Transmission mode (Default),1
+0769,Logger transmission mode (Default),0
+0770,Logger transmission interval (Default),0
+0771,Logger transmission capacity (Default),0
+0772,Time interval with ignition On (Default),120
+0773,Time interval with ignition Off (Default),1800
+0774,Server connection timeout (Default),0
+0775,Keep-alive time interval (Default),0
+0776,Location report condition (Default),11
+0778,Report distance (Default),0
+0779,Ignition off - time interval limit (Default),0
+0780,Alternate time interval ignition Off (Default),0
+0781,Transmission mode during a voice call (Default),
+0782,Heading change degrees (Default),0
+0783,Heading change min. speed (Default),0
+0784,Speed change (Default),0
+0785,Time interval without power (Default),0
+0786,Satellite period for Ignition On (Default),0
+0787,Satellite period for Ignition Off (Default),0
+0788,Compact trail (Default),0
+1024,Transmission mode (Alternate),0
+1025,Logger transmission mode (Alternate),0
+1026,Logger transmission interval (Alternate),0
+1027,Logger transmission capacity (Alternate),0
+1028,Time interval with ignition On (Alternate),60
+1029,Time interval with ignition Off (Alternate),0
+1030,Server connection timeout (Alternate),0
+1031,Keep-alive time interval (Alternate),0
+1032,Location report condition (Alternate),3
+1034,Report distance (Alternate),0
+1035,Ignition off - time interval limit (Alternate),0
+1036,Alternate time interval ignition Off (Alternate),0
+1037,Transmission mode during a voice call (Alternate),
+1038,Heading change degrees (Alternate),0
+1039,Heading change min. speed (Alternate),0
+1040,Speed change (Alternate),0
+1041,Time interval without power (Alternate),0
+1042,Satellite period for Ignition On (Alternate),0
+1043,Satellite period for Ignition Off (Alternate),0
+1044,Compact trail (Alternate),0
+1177,Dynamic event structure (cont.),
+1281,Event description: Location report,Location
+1282,Event description: Diagnostic report,Error
+1284,Event description: Ignition turned on,Ignition On
+1285,Event description: Ignition turned off,Ignition Off
+1286,Event description: Speed limit,Speed
+1287,Event description: Entered geo-zone,Entered Zone
+1288,Event description: Exited geo-zone,Left Zone
+1289,Event description: Car battery disconnected,Lost Power
+1290,Event description: Car battery reconnected,Power Restored
+1291,Event description: Internal backup battery is low,Low Battery
+1292,Event description: Voltage below threshold,Low Voltage
+1293,Event description: Voltage above threshold,High Voltage
+1294,Event description: Digital input low,Input Low
+1295,Event description: Digital input high,Input High
+1296,Event description: iButton changed,Dallas
+1297,Event description: External alarm state changed,Alarm Status
+1298,Event description: Tracking,Track
+1299,Event description: Immobilizer: Arm,Immmob. Arm
+1300,Event description: Immobilizer: Disarm,Immmob. Disarm
+1301,Event description: Immobilizer: Wrong code,Immmob. Wrong
+1302,Event description: Idle excessive,Idling
+1303,Event description: Network changed,Network Changed
+1304,Event description: Engine on,Engine On
+1305,Event description: Engine off,Engine Off
+1306,Event description: Tow detection,Towing
+1307,Event description: Motorcycle alarm: Alarm,
+1308,Event description: Motorcycle alarm: Armed,
+1309,Event description: Motorcycle alarm: Disarmed,
+1310,Event description: Motorcycle alarm: Valet mode,
+1311,Event description: Motorcycle fall detected,
+1312,Event description: Motorcycle accident detected,
+1313,Event description: External device,External Device
+1314,Event description: Drive destination selected,Drive Destination
+1315,Event description: Immobilizer: Violation,Immmob. Violation
+1316,Event description: Panic,Panic
+1317,Event description: Voice callback,
+1318,Event description: Voice call started,
+1319,Event description: Voice call ended,
+1320,Event description: Canalog: Rule occurred,Rule
+1321,Event description: Canalog: Crash detected,Accident
+1322,Event description: Jamming detected,GSM Jamming Detected
+1323,Event description: Jamming ended,GSM Jamming Ended
+1324,Event description: Movement detected,Moving
+1325,Event description: End of movement detected,Stopped
+1326,Event description: iButton attached,Dallas Connected
+1327,Event description: iButton detached,Dallas Disconnected
+1328,Event description: Custom Event #1,
+1329,Event description: Custom Event #2,
+1330,Event description: Custom Event #3,
+1331,Event description: Custom Event #4,
+1332,Event description: Custom Event #5,
+1333,Event description: Custom Event #6,
+1334,Event description: Custom Event #7,
+1335,Event description: Custom Event #8,
+1336,Event description: Temperature event,Temperature
+1337,Event description: Geo zone duration,GeoZone Duration
+1338,Event description: Driving,Driving
+1339,Event description: Driving ended,Stopped
+1340,Event description: Custom Event #9,
+1341,Event description: Custom Event #10,
+1342,Event description: Custom Event #11,
+1343,Event description: Custom Event #12,
+1344,Event description: Custom Event #13,
+1345,Event description: Custom Event #14,
+1346,Event description: Custom Event #15,
+1347,Event description: Custom Event #16,
+1348,Event description: Immobilizer: Passenger ID,Passenger
+1349,Event description: Vehicle identification number,VIN Number
+1350,Event description: Diagnostics trouble codes,DTC
+1351,Event description: Low RPM,Low RPM
+1352,Event description: High RPM,High RPM
+1353,Event description: Device added,Device Added
+1354,Event description: Device removed,Device Removed
+1355,Event description: Motorcycle alarm: Garage mode,
+1356,Event description: Removal/Sabotage,Remove/Sabotage
+1357,Event description: Immobilizer: Override mode,Immmob. Override
+1358,Event description: Normal RPM,Normal RPM
+1359,Event description: Idle ended,Idle Ended
+1360,Event description: Overtime,Overtime
+1361,Event description: Ignition off while moving,Ignition Off While Moving
+1362,Event description: Driver assistance,Driver Assistance
+1363,Event description: Voltage in range,Voltage In Range
+1364,Event description: Vibration detected,Vibration Detected
+1365,Event description: Hijack turned off,Hijack Turned Off
+1366,Event description: Hijack turned on,Hijack Turned On
+1367,Event description: Hijack warning,Hijack Warning
+1368,Event description: Hijack detected,Hijack Detected
+1369,Event description: Service needed,Service needed
+1370,Event description: GNSS Jamming detected,GNSS Jamming detected
+1371,Event description: GNSS Jamming ended,GNSS Jamming ended
+1372,Event description: Low remote battery,Low remote battery
+1373,Event description: Forced disarm,Immob. Forced disarm
+1536,Rule #1 type,1
+1537,Rule #1: iButton key ID,
+1538,Rule #1: iButton data mask,
+1539,Rule #1: iButton data value,
+1540,Rule #1: Driver code,
+1541,Rule #1: Input number,
+1542,Rule #1: Input state,
+1543,Rule #1: Remote ID value,
+1544,Rule #1: Remote RSSI,
+1545,Rule #1: Vehicle license level,
+1552,Rule #2 type,0
+1553,Rule #2: iButton key ID,
+1554,Rule #2: iButton data mask,
+1555,Rule #2: iButton data value,
+1556,Rule #2: Driver code,
+1557,Rule #2: Input number,
+1558,Rule #2: Input state,
+1559,Rule #2: Remote ID value,
+1560,Rule #2: Remote RSSI,
+1561,Rule #2: Vehicle license level,
+1568,Rule #3 type,0
+1569,Rule #3: iButton key ID,
+1570,Rule #3: iButton data mask,
+1571,Rule #3: iButton data value,
+1572,Rule #3: Driver code,
+1573,Rule #3: Input number,
+1574,Rule #3: Input state,
+1575,Rule #3: Remote ID value,
+1576,Rule #3: Remote RSSI,
+1577,Rule #3: Vehicle license level,
+1584,Rule #4 type,0
+1585,Rule #4: iButton key ID,
+1586,Rule #4: iButton data mask,
+1587,Rule #4: iButton data value,
+1588,Rule #4: Driver code,
+1589,Rule #4: Input number,
+1590,Rule #4: Input state,
+1591,Rule #4: Remote ID value,
+1592,Rule #4: Remote RSSI,
+1593,Rule #4: Vehicle license level,
+1600,Rule #5 type,0
+1601,Rule #5: iButton key ID,
+1602,Rule #5: iButton data mask,
+1603,Rule #5: iButton data value,
+1604,Rule #5: Driver code,
+1605,Rule #5: Input number,
+1606,Rule #5: Input state,
+1607,Rule #5: Remote ID value,
+1608,Rule #5: Remote RSSI,
+1609,Rule #5: Vehicle license level,
+1616,Rule #6 type,0
+1617,Rule #6: iButton key ID,
+1618,Rule #6: iButton data mask,
+1619,Rule #6: iButton data value,
+1620,Rule #6: Driver code,
+1621,Rule #6: Input number,
+1622,Rule #6: Input state,
+1623,Rule #6: Remote ID value,
+1624,Rule #6: Remote RSSI,
+1625,Rule #6: Vehicle license level,
+1632,Rule #7 type,0
+1633,Rule #7: iButton key ID,
+1634,Rule #7: iButton data mask,
+1635,Rule #7: iButton data value,
+1636,Rule #7: Driver code,
+1637,Rule #7: Input number,
+1638,Rule #7: Input state,
+1639,Rule #7: Remote ID value,
+1640,Rule #7: Remote RSSI,
+1641,Rule #7: Vehicle license level,
+1648,Rule #8 type,0
+1649,Rule #8: iButton key ID,
+1650,Rule #8: iButton data mask,
+1651,Rule #8: iButton data value,
+1652,Rule #8: Driver code,
+1653,Rule #8: Input number,
+1654,Rule #8: Input state,
+1655,Rule #8: Remote ID value,
+1656,Rule #8: Remote RSSI,
+1657,Rule #8: Vehicle license level,
+1793,Output pattern #1 configuration,"1,1,E1"
+1794,Output pattern #2 configuration,"1,4,E2"
+1795,Output pattern #3 configuration,"1,4,E3"
+1796,Output pattern #4 configuration,"1,4,E4"
+1797,Output pattern #5 configuration,0
+1798,Output pattern #6 configuration,0
+1799,Output pattern #7 configuration,0
+1800,Output pattern #8 configuration,0
+1808,Geo-Zone #1 min. duration,0
+1809,Geo-Zone #1 max. duration,0
+1810,Geo-Zone #2 min. duration,0
+1811,Geo-Zone #2 max. duration,0
+1812,Geo-Zone #3 min. duration,0
+1813,Geo-Zone #3 max. duration,0
+1814,Geo-Zone #4 min. duration,0
+1815,Geo-Zone #4 max. duration,0
+1816,Geo-Zone #5 min. duration,0
+1817,Geo-Zone #5 max. duration,0
+1818,Geo-Zone #6 min. duration,0
+1819,Geo-Zone #6 max. duration,0
+1820,Geo-Zone #7 min. duration,0
+1821,Geo-Zone #7 max. duration,0
+1822,Geo-Zone #8 min. duration,0
+1823,Geo-Zone #8 max. duration,0
+1824,Radius-Zone #1 min. duration,0
+1825,Radius-Zone #1 max. duration,0
+1826,Radius-Zone #2 min. duration,0
+1827,Radius-Zone #2 max. duration,0
+1828,Radius-Zone #3 min. duration,0
+1829,Radius-Zone #3 max. duration,0
+1830,Radius-Zone #4 min. duration,0
+1831,Radius-Zone #4 max. duration,0
+1832,Radius-Zone #5 min. duration,0
+1833,Radius-Zone #5 max. duration,0
+1834,Radius-Zone #6 min. duration,0
+1835,Radius-Zone #6 max. duration,0
+1836,Radius-Zone #7 min. duration,0
+1837,Radius-Zone #7 max. duration,0
+1838,Radius-Zone #8 min. duration,0
+1839,Radius-Zone #8 max. duration,0
+1840,RPM Source,0
+1841,Low RPM duration,0
+1842,Low RPM,0
+1843,Low RPM speed,0
+1849,High RPM duration,0
+1850,High RPM,0
+1851,High RPM speed,0
+1857,Tachograph: Ignition,0
+1858,Tachograph: Max. working time,0
+1859,Tachograph: Min. trip duration,0
+1860,Tachograph: Max. allowed trip duration,0
+1861,Tachograph: Min. parking duration,0
+1862,Tachograph: Required parking duration,0
+1863,Tachograph: Overnight duration,0
+1864,Tachograph: Trip end notification,0
+1865,Tachograph: Parking end duration,0
+1866,Tachograph: Green LED,0
+1867,Tachograph: Red LED,0
+1869,Tachograph: Hours to print,
+1873,Ignition off while moving: Ignition source,0
+1874,Ignition off while moving: Speed,0
+1875,Ignition off while moving: Duration,0
+1880,Service needed: Settings,0
+1881,Service needed: Value,1
+1882,Service needed: Offset,0
+1889,Auto TX: Settings,0
+1890,Auto TX: Device ID,0
+1891,Auto TX: Interval,0
+1892,Auto TX: Format,0
+1893,Auto TX: Message contents,
+1894,Immobilizer: Prevent changing output,0
+1895,Ignition event condition,0
+1896,Always send wake-up,0
+1897,Custom SNTP server,
+1898,Current location transmission interval,0
+1899,Bluetooth Fuel Sensor Serial,0
+1900,Toggle override mode by TCoin button,0
+1901,Beacon type filter,127
+1902,Get date/time from SNTP server,0
+1903,External odometer after power loss,0
+1904,Immobilizer: Arm code,0
+1905,Filter eData parameters,0
+1906,Filter eData rules,0
+1908,Magnetic card: Device ID,5
+1909,Magnetic card: Data format,0
+1910,Magnetic card: Diagnostics,0
+1912,Driver assistance key,0
+1913,Immobilizer: Ignore keep-alive after arming,0
+1914,Switch order of driver code fields,0
+1915,Force modem on without signal,0
+1916,Bluetooth secure: Secret,
+1917,Second eFuel device ID,0
+1918,SR Card: MAC,
+1919,Bluetooth Fuel Sensor Serial (2),0
+1920,Input #5/G low transition time,0
+1921,Input #5/G high transition time,0
+1922,Input #6 low transition time,0
+1923,Input #6 high transition time,0
+1924,Input #7/ENet3 low transition time,0
+1925,Input #7/ENet3 high transition time,0
+1926,Input #8/IGN low transition time,0
+1927,Input #8/IGN high transition time,0
+1928,Immobilizer: Delay arming trigger,0
+1929,Immobilizer: Delay arming duration,0
+1930,Use ENet3 relay,0
+1931,Immobilizer: Forced disarm code,0
+1932,CAN TX: Duration after Ignition off,0
+1933,StarLink RT: Condition,
+1934,StarLink RT: Server IP,
+1935,StarLink RT: Server Port,
+1937,Panic event triggers eCall,
+1938,eSafe accident triggers eCall,
+1939,Diagnose eSafe module,0
+1940,Voice call max. duration,
+1944,Hijack: Logic,0
+1945,Hijack: Warning duration,0
+1946,Hijack: Hijack duration,0
+1952,Input #9/I low transition time,
+1953,Input #9/I high transition time,
+1954,Input #10/J low transition time,
+1955,Input #10/J high transition time,
+1956,Input #11/K low transition time,
+1957,Input #11/K high transition time,
+1958,Input #12/L low transition time,
+1959,Input #12/L high transition time,
+1968,Enable internal eFuel Hub ,
+1969,WiFi AP: Condition,
+1970,User defined dynamic field (2),
+1971,Sync interval,0
+1972,GNSS Jamming duration,5
+1973,Low power mode (experimental),0
+1974,Special message type for events without ACK,0
+1975,Beacon transmit condition,0
+1976,Allow communication without main power,0
+1977,External devices filter for patterns,0
+1978,Immobilizer: Arm with disarm rule,0
+1979,GNSS without location duration,0
+1980,Immobilizer: STAR led behavior after arming,0
+1981,Jamming detection: Condition,0
+1982,Immobilizer: Reminder delay,0
+1983,WiFi Client: No internet,
+1985,Speed limit #1: Geo zones,
+1986,Speed limit #1: Radius zones,
+1987,Speed limit #2: Geo zones,
+1988,Speed limit #2: Radius zones,
+1989,Speed limit #3: Geo zones,
+1990,Speed limit #3: Radius zones,
+1991,Speed limit #4: Geo zones,
+1992,Speed limit #4: Radius zones,
+1993,Speed limit #5: Geo zones,
+1994,Speed limit #5: Radius zones,
+1995,Speed limit #1 remap to Custom Event,0
+1996,Speed limit #2 remap to Custom Event,0
+1997,Speed limit #3 remap to Custom Event,0
+1998,Speed limit #4 remap to Custom Event,0
+1999,Speed limit #5 remap to Custom Event,0
+2000,Custom Voltage #1: Input,0
+2001,Custom Voltage #1: Low voltage level,0
+2002,Custom Voltage #1: Low voltage duration,0
+2003,Custom Voltage #1: High voltage level,0
+2004,Custom Voltage #1: High voltage duration,0
+2005,Custom Voltage #1: Low voltage event,0
+2006,Custom Voltage #1: Voltage in range event,0
+2007,Custom Voltage #1: High voltage event,0
+2008,Custom Voltage #2: Input,0
+2009,Custom Voltage #2: Low voltage level,0
+2010,Custom Voltage #2: Low voltage duration,0
+2011,Custom Voltage #2: High voltage level,0
+2012,Custom Voltage #2: High voltage duration,0
+2013,Custom Voltage #2: Low voltage event,0
+2014,Custom Voltage #2: Voltage in range event,0
+2015,Custom Voltage #2: High voltage event,0
+2048,Event config: Custom Event #1,513
+2049,Event config: Custom Event #2,513
+2050,Event config: Custom Event #3,513
+2051,Event config: Custom Event #4,513
+2052,Event config: Custom Event #5,0
+2053,Event config: Custom Event #6,0
+2054,Event config: Custom Event #7,0
+2055,Event config: Custom Event #8,0
+2056,Event config: Temperature event,0
+2057,Event config: Geo zone duration,0
+2058,Event config: Driving started,0
+2059,Event config: Driving ended,0
+2060,Event config: Custom Event #9,0
+2061,Event config: Custom Event #10,0
+2062,Event config: Custom Event #11,0
+2063,Event config: Custom Event #12,0
+2064,Event config: Custom Event #13,0
+2065,Event config: Custom Event #14,0
+2066,Event config: Custom Event #15,0
+2067,Event config: Custom Event #16,0
+2068,Event config: Immobilizer: Passenger ID,0
+2069,Event config: Vehicle identification number,0
+2070,Event config: Diagnostics trouble codes,0
+2071,Event config: Low RPM,0
+2072,Event config: High RPM,0
+2073,Event config: Device added,0
+2074,Event config: Device removed,0
+2075,Event config: Motorcycle alarm: Garage mode,
+2076,Event config: Removal/Sabotage,0
+2077,Event config: Immobilizer: Override mode,0
+2078,Event config: Normal RPM,0
+2079,Event config: Idle ended,0
+2080,Sensors: Settings,0
+2081,Sensors: Interval (On),0
+2082,Sensors: Interval (Off),0
+2083,Sensors: Input mask,0
+2084,Sensors: Input value,0
+2085,Sensor #1: Sensor ID,
+2086,Sensor #1: High temperature,0.0
+2087,Sensor #1: Low temperature,0.0
+2088,Sensor #1: Temperature offset,0.0
+2089,Sensor #1: Temperature delay,0
+2090,Sensor #2: Sensor ID,
+2091,Sensor #2: High temperature,0.0
+2092,Sensor #2: Low temperature,0.0
+2093,Sensor #2: Temperature offset,0.0
+2094,Sensor #2: Temperature delay,0
+2095,Sensor #3: Sensor ID,
+2096,Sensor #3: High temperature,0.0
+2097,Sensor #3: Low temperature,0.0
+2098,Sensor #3: Temperature offset,0.0
+2099,Sensor #3: Temperature delay,0
+2100,Sensor #4: Sensor ID,
+2101,Sensor #4: High temperature,0.0
+2102,Sensor #4: Low temperature,0.0
+2103,Sensor #4: Temperature offset,0.0
+2104,Sensor #4: Temperature delay,0
+2105,Sensor #5: Sensor ID,
+2106,Sensor #5: High temperature,0.0
+2107,Sensor #5: Low temperature,0.0
+2108,Sensor #5: Temperature offset,0.0
+2109,Sensor #5: Temperature delay,0
+2110,Sensor #6: Sensor ID,
+2111,Sensor #6: High temperature,0.0
+2112,Sensor #6: Low temperature,0.0
+2113,Sensor #6: Temperature offset,0.0
+2114,Sensor #6: Temperature delay,0
+2115,Sensor #7: Sensor ID,
+2116,Sensor #7: High temperature,0.0
+2117,Sensor #7: Low temperature,0.0
+2118,Sensor #7: Temperature offset,0.0
+2119,Sensor #7: Temperature delay,0
+2120,Sensor #8: Sensor ID,
+2121,Sensor #8: High temperature,0.0
+2122,Sensor #8: Low temperature,0.0
+2123,Sensor #8: Temperature offset,0.0
+2124,Sensor #8: Temperature delay,0
+2125,Sensor #9: Sensor ID,
+2126,Sensor #9: High temperature,0.0
+2127,Sensor #9: Low temperature,0.0
+2128,Sensor #9: Temperature offset,0.0
+2129,Sensor #9: Temperature delay,0
+2130,Sensor #10: Sensor ID,
+2131,Sensor #10: High temperature,0.0
+2132,Sensor #10: Low temperature,0.0
+2133,Sensor #10: Temperature offset,0.0
+2134,Sensor #10: Temperature delay,0
+2144,Event config: Overtime,0
+2145,Event config: Ignition off while moving,0
+2146,Event config: Driver assistance,0
+2147,Event config: Voltage in range,0
+2148,Event config: Vibration detected,0
+2149,Event config: Hijack turned off,0
+2150,Event config: Hijack turned on,0
+2151,Event config: Hijack warning,0
+2152,Event config: Hijack detected,0
+2153,Event config: Service needed,1
+2154,Event config: GNSS Jamming detected,0
+2155,Event config: GNSS Jamming ended,0
+2156,Event config: Low remote battery,0
+2157,Event config: Forced disarm,0
+2158,Event config: SIM lost,0
+2159,Event config: SIM detected,0
+2177,Override schedule #1: Days,0
+2178,Override schedule #1: Start time,11:50
+2179,Override schedule #1: End time,12:00
+2180,Override schedule #2: Days,0
+2181,Override schedule #2: Start time,0:00
+2182,Override schedule #2: End time,0:00
+2183,Override schedule #3: Days,0
+2184,Override schedule #3: Start time,0:00
+2185,Override schedule #3: End time,0:00
+2186,Override schedule #4: Days,0
+2187,Override schedule #4: Start time,0:00
+2188,Override schedule #4: End time,0:00
+2189,Override schedule #5: Days,0
+2190,Override schedule #5: Start time,0:00
+2191,Override schedule #5: End time,0:00
+2209,Drive destination remap #1,0
+2210,Drive destination remap #2,0
+2211,Drive destination remap #3,0
+2212,Drive destination remap #4,0
+2213,Drive destination remap #5,0
+2214,Drive destination remap #6,0
+2215,Drive destination remap #7,0
+2216,Drive destination remap #8,0
+2217,Drive destination remap #9,0
+2304,Sensor event: Sensor available,0
+2305,Sensor event: Sensor lost,0
+2306,Sensor event: Battery voltage high,0
+2307,Sensor event: Battery voltage in range,0
+2308,Sensor event: Battery voltage low,0
+2309,Sensor event: Humidity high,0
+2310,Sensor event: Humidity in range,0
+2311,Sensor event: Humidity low,0
+2312,Sensor event: Light level high,0
+2313,Sensor event: Light level in range,0
+2314,Sensor event: Light level low,0
+2315,Sensor event: Free fall,0
+2316,Sensor event: Button pressed,0
+2317,Sensor event: Movement detected,0
+2318,Sensor event: Magnet connected,0
+2319,Sensor event: Magnet disconnected,0
+2320,Sensor #1: High battery voltage,0.000
+2321,Sensor #1: Low battery voltage,0.000
+2322,Sensor #1: Battery voltage duration,0
+2323,Sensor #2: High battery voltage,0.000
+2324,Sensor #2: Low battery voltage,0.000
+2325,Sensor #2: Battery voltage duration,0
+2326,Sensor #3: High battery voltage,0.000
+2327,Sensor #3: Low battery voltage,0.000
+2328,Sensor #3: Battery voltage duration,0
+2329,Sensor #4: High battery voltage,0.000
+2330,Sensor #4: Low battery voltage,0.000
+2331,Sensor #4: Battery voltage duration,0
+2332,Sensor #5: High battery voltage,0.000
+2333,Sensor #5: Low battery voltage,0.000
+2334,Sensor #5: Battery voltage duration,0
+2335,Sensor #6: High battery voltage,0.000
+2336,Sensor #6: Low battery voltage,0.000
+2337,Sensor #6: Battery voltage duration,0
+2338,Sensor #7: High battery voltage,0.000
+2339,Sensor #7: Low battery voltage,0.000
+2340,Sensor #7: Battery voltage duration,0
+2341,Sensor #8: High battery voltage,0.000
+2342,Sensor #8: Low battery voltage,0.000
+2343,Sensor #8: Battery voltage duration,0
+2344,Sensor #9: High battery voltage,0.000
+2345,Sensor #9: Low battery voltage,0.000
+2346,Sensor #9: Battery voltage duration,0
+2347,Sensor #10: High battery voltage,0.000
+2348,Sensor #10: Low battery voltage,0.000
+2349,Sensor #10: Battery voltage duration,0
+2350,Sensor #1: High humidity level,0.0
+2351,Sensor #1: Low humidity level,0.0
+2352,Sensor #1: Humidity level offset,0.0
+2353,Sensor #1: Humidity level duration,0
+2354,Sensor #2: High humidity level,0.0
+2355,Sensor #2: Low humidity level,0.0
+2356,Sensor #2: Humidity level offset,0.0
+2357,Sensor #2: Humidity level duration,0
+2358,Sensor #3: High humidity level,0.0
+2359,Sensor #3: Low humidity level,0.0
+2360,Sensor #3: Humidity level offset,0.0
+2361,Sensor #3: Humidity level duration,0
+2362,Sensor #4: High humidity level,0.0
+2363,Sensor #4: Low humidity level,0.0
+2364,Sensor #4: Humidity level offset,0.0
+2365,Sensor #4: Humidity level duration,0
+2366,Sensor #5: High humidity level,0.0
+2367,Sensor #5: Low humidity level,0.0
+2368,Sensor #5: Humidity level offset,0.0
+2369,Sensor #5: Humidity level duration,0
+2370,Sensor #6: High humidity level,0.0
+2371,Sensor #6: Low humidity level,0.0
+2372,Sensor #6: Humidity level offset,0.0
+2373,Sensor #6: Humidity level duration,0
+2374,Sensor #7: High humidity level,0.0
+2375,Sensor #7: Low humidity level,0.0
+2376,Sensor #7: Humidity level offset,0.0
+2377,Sensor #7: Humidity level duration,0
+2378,Sensor #8: High humidity level,0.0
+2379,Sensor #8: Low humidity level,0.0
+2380,Sensor #8: Humidity level offset,0.0
+2381,Sensor #8: Humidity level duration,0
+2382,Sensor #9: High humidity level,0.0
+2383,Sensor #9: Low humidity level,0.0
+2384,Sensor #9: Humidity level offset,0.0
+2385,Sensor #9: Humidity level duration,0
+2386,Sensor #10: High humidity level,0.0
+2387,Sensor #10: Low humidity level,0.0
+2388,Sensor #10: Humidity level offset,0.0
+2389,Sensor #10: Humidity level duration,0
+2390,Sensor #1: High light level,0
+2391,Sensor #1: Low light level,0
+2392,Sensor #1: Light level duration,0
+2393,Sensor #2: High light level,0
+2394,Sensor #2: Low light level,0
+2395,Sensor #2: Light level duration,0
+2396,Sensor #3: High light level,0
+2397,Sensor #3: Low light level,0
+2398,Sensor #3: Light level duration,0
+2399,Sensor #4: High light level,0
+2400,Sensor #4: Low light level,0
+2401,Sensor #4: Light level duration,0
+2402,Sensor #5: High light level,0
+2403,Sensor #5: Low light level,0
+2404,Sensor #5: Light level duration,0
+2405,Sensor #6: High light level,0
+2406,Sensor #6: Low light level,0
+2407,Sensor #6: Light level duration,0
+2408,Sensor #7: High light level,0
+2409,Sensor #7: Low light level,0
+2410,Sensor #7: Light level duration,0
+2411,Sensor #8: High light level,0
+2412,Sensor #8: Low light level,0
+2413,Sensor #8: Light level duration,0
+2414,Sensor #9: High light level,0
+2415,Sensor #9: Low light level,0
+2416,Sensor #9: Light level duration,0
+2417,Sensor #10: High light level,0
+2418,Sensor #10: Low light level,0
+2419,Sensor #10: Light level duration,0
+2420,Sensor #1: Magnet sensor duration,0
+2421,Sensor #2: Magnet sensor duration,0
+2422,Sensor #3: Magnet sensor duration,0
+2423,Sensor #4: Magnet sensor duration,0
+2424,Sensor #5: Magnet sensor duration,0
+2425,Sensor #6: Magnet sensor duration,0
+2426,Sensor #7: Magnet sensor duration,0
+2427,Sensor #8: Magnet sensor duration,0
+2428,Sensor #9: Magnet sensor duration,0
+2429,Sensor #10: Magnet sensor duration,0
+2431,Sensor event: Visible movement started,0
+2432,Sensor event: Visible movement stopped,0
+2433,Sensor #1: Visible movement duration,0
+2434,Sensor #2: Visible movement duration,0
+2435,Sensor #3: Visible movement duration,0
+2436,Sensor #4: Visible movement duration,0
+2437,Sensor #5: Visible movement duration,0
+2438,Sensor #6: Visible movement duration,0
+2439,Sensor #7: Visible movement duration,0
+2440,Sensor #8: Visible movement duration,0
+2441,Sensor #9: Visible movement duration,0
+2442,Sensor #10: Visible movement duration,0
+2464,LTFRB: GPSID,
+2465,LTFRB: Server IP,
+2466,LTFRB: Server Port,
+2467,LTFRB: Transmission interval,
+2472,Immobilizer: Wrong code settings,0
+2473,Immobilizer: Wrong code attempts,0
+2474,Immobilizer: Wrong code time,0
+2475,Immobilizer: Wrong code block duration,0
+2480,MQTT User name,
+2481,MQTT Password,
+2482,MQTT Publish topic,
+2483,MQTT Subscribe topic,
+3072,CAN 1: Configuration,
+3073,CAN 1: Can ID,0
+3074,CAN 1: Filter Mask,0000000000000000
+3075,CAN 1: Filter Value,0000000000000000
+3076,CAN 1: Start bit,0
+3077,CAN 1: Length,0
+3078,CAN 1: Endian,0
+3079,CAN 1: XOR Value,0
+3080,CAN 1: Multiplier,0
+3081,CAN 1: Divisor,0
+3082,CAN 1: Offset,0
+3083,CAN 1: Validity duration,0
+3084,CAN 1: FMS,0
+3085,CAN 1: Settings,0
+3086,CAN 1: After sequence,0
+3087,CAN 1: Automatic response,0
+3088,CAN 2: Configuration,
+3089,CAN 2: Can ID,0
+3090,CAN 2: Filter Mask,0000000000000000
+3091,CAN 2: Filter Value,0000000000000000
+3092,CAN 2: Start bit,0
+3093,CAN 2: Length,0
+3094,CAN 2: Endian,0
+3095,CAN 2: XOR Value,0
+3096,CAN 2: Multiplier,0
+3097,CAN 2: Divisor,0
+3098,CAN 2: Offset,0
+3099,CAN 2: Validity duration,0
+3100,CAN 2: FMS,0
+3101,CAN 2: Settings,0
+3102,CAN 2: After sequence,0
+3103,CAN 2: Automatic response,0
+3104,CAN 3: Configuration,
+3105,CAN 3: Can ID,0
+3106,CAN 3: Filter Mask,0000000000000000
+3107,CAN 3: Filter Value,0000000000000000
+3108,CAN 3: Start bit,0
+3109,CAN 3: Length,0
+3110,CAN 3: Endian,0
+3111,CAN 3: XOR Value,0
+3112,CAN 3: Multiplier,0
+3113,CAN 3: Divisor,0
+3114,CAN 3: Offset,0
+3115,CAN 3: Validity duration,0
+3116,CAN 3: FMS,0
+3117,CAN 3: Settings,0
+3118,CAN 3: After sequence,0
+3119,CAN 3: Automatic response,0
+3120,CAN 4: Configuration,
+3121,CAN 4: Can ID,0
+3122,CAN 4: Filter Mask,0000000000000000
+3123,CAN 4: Filter Value,0000000000000000
+3124,CAN 4: Start bit,0
+3125,CAN 4: Length,0
+3126,CAN 4: Endian,0
+3127,CAN 4: XOR Value,0
+3128,CAN 4: Multiplier,0
+3129,CAN 4: Divisor,0
+3130,CAN 4: Offset,0
+3131,CAN 4: Validity duration,0
+3132,CAN 4: FMS,0
+3133,CAN 4: Settings,0
+3134,CAN 4: After sequence,0
+3135,CAN 4: Automatic response,0
+3136,CAN 5: Configuration,
+3137,CAN 5: Can ID,0
+3138,CAN 5: Filter Mask,0000000000000000
+3139,CAN 5: Filter Value,0000000000000000
+3140,CAN 5: Start bit,0
+3141,CAN 5: Length,0
+3142,CAN 5: Endian,0
+3143,CAN 5: XOR Value,0
+3144,CAN 5: Multiplier,0
+3145,CAN 5: Divisor,0
+3146,CAN 5: Offset,0
+3147,CAN 5: Validity duration,0
+3148,CAN 5: FMS,0
+3149,CAN 5: Settings,0
+3150,CAN 5: After sequence,0
+3151,CAN 5: Automatic response,0
+3152,CAN 6: Configuration,
+3153,CAN 6: Can ID,0
+3154,CAN 6: Filter Mask,0000000000000000
+3155,CAN 6: Filter Value,0000000000000000
+3156,CAN 6: Start bit,0
+3157,CAN 6: Length,0
+3158,CAN 6: Endian,0
+3159,CAN 6: XOR Value,0
+3160,CAN 6: Multiplier,0
+3161,CAN 6: Divisor,0
+3162,CAN 6: Offset,0
+3163,CAN 6: Validity duration,0
+3164,CAN 6: FMS,0
+3165,CAN 6: Settings,0
+3166,CAN 6: After sequence,0
+3167,CAN 6: Automatic response,0
+3168,CAN 7: Configuration,
+3169,CAN 7: Can ID,0
+3170,CAN 7: Filter Mask,0000000000000000
+3171,CAN 7: Filter Value,0000000000000000
+3172,CAN 7: Start bit,0
+3173,CAN 7: Length,0
+3174,CAN 7: Endian,0
+3175,CAN 7: XOR Value,0
+3176,CAN 7: Multiplier,0
+3177,CAN 7: Divisor,0
+3178,CAN 7: Offset,0
+3179,CAN 7: Validity duration,0
+3180,CAN 7: FMS,0
+3181,CAN 7: Settings,0
+3182,CAN 7: After sequence,0
+3183,CAN 7: Automatic response,0
+3184,CAN 8: Configuration,
+3185,CAN 8: Can ID,0
+3186,CAN 8: Filter Mask,0000000000000000
+3187,CAN 8: Filter Value,0000000000000000
+3188,CAN 8: Start bit,0
+3189,CAN 8: Length,0
+3190,CAN 8: Endian,0
+3191,CAN 8: XOR Value,0
+3192,CAN 8: Multiplier,0
+3193,CAN 8: Divisor,0
+3194,CAN 8: Offset,0
+3195,CAN 8: Validity duration,0
+3196,CAN 8: FMS,0
+3197,CAN 8: Settings,0
+3198,CAN 8: After sequence,0
+3199,CAN 8: Automatic response,0
+3200,CAN 9: Configuration,
+3201,CAN 9: Can ID,0
+3202,CAN 9: Filter Mask,0000000000000000
+3203,CAN 9: Filter Value,0000000000000000
+3204,CAN 9: Start bit,0
+3205,CAN 9: Length,0
+3206,CAN 9: Endian,0
+3207,CAN 9: XOR Value,0
+3208,CAN 9: Multiplier,0
+3209,CAN 9: Divisor,0
+3210,CAN 9: Offset,0
+3211,CAN 9: Validity duration,0
+3212,CAN 9: FMS,0
+3213,CAN 9: Settings,0
+3214,CAN 9: After sequence,0
+3215,CAN 9: Automatic response,0
+3216,CAN 10: Configuration,
+3217,CAN 10: Can ID,0
+3218,CAN 10: Filter Mask,0000000000000000
+3219,CAN 10: Filter Value,0000000000000000
+3220,CAN 10: Start bit,0
+3221,CAN 10: Length,0
+3222,CAN 10: Endian,0
+3223,CAN 10: XOR Value,0
+3224,CAN 10: Multiplier,0
+3225,CAN 10: Divisor,0
+3226,CAN 10: Offset,0
+3227,CAN 10: Validity duration,0
+3228,CAN 10: FMS,0
+3229,CAN 10: Settings,0
+3230,CAN 10: After sequence,0
+3231,CAN 10: Automatic response,0
+3232,CAN 11: Configuration,
+3233,CAN 11: Can ID,0
+3234,CAN 11: Filter Mask,0000000000000000
+3235,CAN 11: Filter Value,0000000000000000
+3236,CAN 11: Start bit,0
+3237,CAN 11: Length,0
+3238,CAN 11: Endian,0
+3239,CAN 11: XOR Value,0
+3240,CAN 11: Multiplier,0
+3241,CAN 11: Divisor,0
+3242,CAN 11: Offset,0
+3243,CAN 11: Validity duration,0
+3244,CAN 11: FMS,0
+3245,CAN 11: Settings,0
+3246,CAN 11: After sequence,0
+3247,CAN 11: Automatic response,0
+3248,CAN 12: Configuration,
+3249,CAN 12: Can ID,0
+3250,CAN 12: Filter Mask,0000000000000000
+3251,CAN 12: Filter Value,0000000000000000
+3252,CAN 12: Start bit,0
+3253,CAN 12: Length,0
+3254,CAN 12: Endian,0
+3255,CAN 12: XOR Value,0
+3256,CAN 12: Multiplier,0
+3257,CAN 12: Divisor,0
+3258,CAN 12: Offset,0
+3259,CAN 12: Validity duration,0
+3260,CAN 12: FMS,0
+3261,CAN 12: Settings,0
+3262,CAN 12: After sequence,0
+3263,CAN 12: Automatic response,0
+3264,CAN 13: Configuration,
+3265,CAN 13: Can ID,0
+3266,CAN 13: Filter Mask,0000000000000000
+3267,CAN 13: Filter Value,0000000000000000
+3268,CAN 13: Start bit,0
+3269,CAN 13: Length,0
+3270,CAN 13: Endian,0
+3271,CAN 13: XOR Value,0
+3272,CAN 13: Multiplier,0
+3273,CAN 13: Divisor,0
+3274,CAN 13: Offset,0
+3275,CAN 13: Validity duration,0
+3276,CAN 13: FMS,0
+3277,CAN 13: Settings,0
+3278,CAN 13: After sequence,0
+3279,CAN 13: Automatic response,0
+3280,CAN 14: Configuration,
+3281,CAN 14: Can ID,0
+3282,CAN 14: Filter Mask,0000000000000000
+3283,CAN 14: Filter Value,0000000000000000
+3284,CAN 14: Start bit,0
+3285,CAN 14: Length,0
+3286,CAN 14: Endian,0
+3287,CAN 14: XOR Value,0
+3288,CAN 14: Multiplier,0
+3289,CAN 14: Divisor,0
+3290,CAN 14: Offset,0
+3291,CAN 14: Validity duration,0
+3292,CAN 14: FMS,0
+3293,CAN 14: Settings,0
+3294,CAN 14: After sequence,0
+3295,CAN 14: Automatic response,0
+3296,CAN 15: Configuration,
+3297,CAN 15: Can ID,0
+3298,CAN 15: Filter Mask,0000000000000000
+3299,CAN 15: Filter Value,0000000000000000
+3300,CAN 15: Start bit,0
+3301,CAN 15: Length,0
+3302,CAN 15: Endian,0
+3303,CAN 15: XOR Value,0
+3304,CAN 15: Multiplier,0
+3305,CAN 15: Divisor,0
+3306,CAN 15: Offset,0
+3307,CAN 15: Validity duration,0
+3308,CAN 15: FMS,0
+3309,CAN 15: Settings,0
+3310,CAN 15: After sequence,0
+3311,CAN 15: Automatic response,0
+3312,CAN TX 1: Configuration,
+3313,CAN TX 1: Can ID,0
+3314,CAN TX 1: Data,
+3315,CAN TX 1: Interval,0
+3316,CAN TX 1: Sequence duration,0
+3320,CAN TX 2: Configuration,
+3321,CAN TX 2: Can ID,0
+3322,CAN TX 2: Data,
+3323,CAN TX 2: Interval,0
+3324,CAN TX 2: Sequence duration,0
+3328,CAN TX 3: Configuration,
+3329,CAN TX 3: Can ID,0
+3330,CAN TX 3: Data,
+3331,CAN TX 3: Interval,0
+3332,CAN TX 3: Sequence duration,0
+3336,CAN TX 4: Configuration,
+3337,CAN TX 4: Can ID,0
+3338,CAN TX 4: Data,
+3339,CAN TX 4: Interval,0
+3340,CAN TX 4: Sequence duration,0
+3344,CAN TX 5: Configuration,
+3345,CAN TX 5: Can ID,0
+3346,CAN TX 5: Data,
+3347,CAN TX 5: Interval,0
+3348,CAN TX 5: Sequence duration,0
+3352,CAN TX 6: Configuration,
+3353,CAN TX 6: Can ID,0
+3354,CAN TX 6: Data,
+3355,CAN TX 6: Interval,0
+3356,CAN TX 6: Sequence duration,0
+3360,CAN TX 7: Configuration,
+3361,CAN TX 7: Can ID,0
+3362,CAN TX 7: Data,
+3363,CAN TX 7: Interval,0
+3364,CAN TX 7: Sequence duration,0
+3368,CAN TX 8: Configuration,
+3369,CAN TX 8: Can ID,0
+3370,CAN TX 8: Data,
+3371,CAN TX 8: Interval,0
+3372,CAN TX 8: Sequence duration,0
+3376,CAN TX 9: Configuration,
+3377,CAN TX 9: Can ID,
+3378,CAN TX 9: Data,
+3379,CAN TX 9: Interval,
+3380,CAN TX 9: Sequence duration,
+3384,CAN TX 10: Configuration,
+3385,CAN TX 10: Can ID,
+3386,CAN TX 10: Data,
+3387,CAN TX 10: Interval,
+3388,CAN TX 10: Sequence duration,
+3392,CAN TX 11: Configuration,
+3393,CAN TX 11: Can ID,
+3394,CAN TX 11: Data,
+3395,CAN TX 11: Interval,
+3396,CAN TX 11: Sequence duration,
+3400,CAN TX 12: Configuration,
+3401,CAN TX 12: Can ID,
+3402,CAN TX 12: Data,
+3403,CAN TX 12: Interval,
+3404,CAN TX 12: Sequence duration,
+3440,CAN Ignition parameters,0
+3441,CAN 1: VIN character offset,
+3442,CAN 2: VIN character offset,
+3443,CAN 3: VIN character offset,
+3444,CAN 4: VIN character offset,
+3445,CAN 5: VIN character offset,
+3446,CAN 6: VIN character offset,
+3447,CAN 7: VIN character offset,
+3448,CAN 8: VIN character offset,
+3449,CAN 9: VIN character offset,
+3450,CAN 10: VIN character offset,
+3451,CAN 11: VIN character offset,
+3452,CAN 12: VIN character offset,
+3453,CAN 13: VIN character offset,
+3454,CAN 14: VIN character offset,
+3455,CAN 15: VIN character offset,
+3456,CAN 1: Min. allowed value,0
+3457,CAN 1: Max. allowed value,0
+3458,CAN 2: Min. allowed value,0
+3459,CAN 2: Max. allowed value,0
+3460,CAN 3: Min. allowed value,0
+3461,CAN 3: Max. allowed value,0
+3462,CAN 4: Min. allowed value,0
+3463,CAN 4: Max. allowed value,0
+3464,CAN 5: Min. allowed value,0
+3465,CAN 5: Max. allowed value,0
+3466,CAN 6: Min. allowed value,0
+3467,CAN 6: Max. allowed value,0
+3468,CAN 7: Min. allowed value,0
+3469,CAN 7: Max. allowed value,0
+3470,CAN 8: Min. allowed value,0
+3471,CAN 8: Max. allowed value,0
+3472,CAN 9: Min. allowed value,0
+3473,CAN 9: Max. allowed value,0
+3474,CAN 10: Min. allowed value,0
+3475,CAN 10: Max. allowed value,0
+3476,CAN 11: Min. allowed value,0
+3477,CAN 11: Max. allowed value,0
+3478,CAN 12: Min. allowed value,0
+3479,CAN 12: Max. allowed value,0
+3480,CAN 13: Min. allowed value,0
+3481,CAN 13: Max. allowed value,0
+3482,CAN 14: Min. allowed value,0
+3483,CAN 14: Max. allowed value,0
+3484,CAN 15: Min. allowed value,0
+3485,CAN 15: Max. allowed value,0
+3488,CAN 1: Data source,1
+3489,CAN 2: Data source,1
+3490,CAN 3: Data source,1
+3491,CAN 4: Data source,1
+3492,CAN 5: Data source,1
+3493,CAN 6: Data source,1
+3494,CAN 7: Data source,1
+3495,CAN 8: Data source,1
+3496,CAN 9: Data source,1
+3497,CAN 10: Data source,1
+3498,CAN 11: Data source,1
+3499,CAN 12: Data source,1
+3500,CAN 13: Data source,0
+3501,CAN 14: Data source,0
+3502,CAN 15: Data source,0
+5633,WiFi AP: APN,
+5634,WiFi AP: SSID,
+5635,WiFi AP: Password,
+5636,WiFi AP: Channel,
+5640,WiFi Client: SSID,
+5641,WiFi Client: Password,
+5647,WiFi: MAC address,
+45057,IMOB: IMEI,
+45058,IMOB: StarLink HW version,
+45059,IMOB: StarLink FW version,
+45060,IMOB: Bluetooth UUID,
+45065,IMOB: Door control enable,
+45066,IMOB: Door unlock (ms),
+45067,IMOB: Door lock (ms),
+45068,IMOB: Door delay (ms),
+45069,IMOB: Door state enable,
+45072,IMOB: Vehicle block enable,
+45084,IMOB: Vehicle VIN,
+45085,IMOB: Vehicle speed,
+45086,IMOB: Vehicle odometer,
+45087,IMOB: Vehicle voltage,
+45088,IMOB: Fuel level,
+45089,IMOB: Engine RPM,
+45090,IMOB: Keyholder state,
+45092,IMOB: Ignition state,
+45095,IMOB: Block state,
+45096,IMOB: Door state,
+45099,IMOB: StarLink serial,
+45101,IMOB: Ignition on interval,
+45108,IMOB: Bluetooth MAC,
+45116,IMOB: Vehicle range,
+45117,IMOB: SOC,
+45121,IMOB: Data sending enable,
+45122,IMOB: Data sending while charging,
+45123,IMOB: Charge min. voltage,
+45124,IMOB: Charge transmit interval,
+45125,IMOB: Door control type,
+45126,IMOB: Door state type,
+45127,IMOB: Door lock level,
+45128,IMOB: Door state voltage,
+45129,IMOB: Door state duration (ms),
+45130,IMOB: Keyholder enable,
+45131,IMOB: Card reader enable,
+45136,IMOB: EV charging state,
+45137,IMOB: CV9,
+45138,IMOB: CV10,
+45139,IMOB: CV11,
+45140,IMOB: CV12,
+45141,IMOB: CAN lock command list,
+45142,IMOB: CAN unlock command list,
+45143,IMOB: CAN Lock/Unlock command delay,
+45144,IMOB: CAN door locked value,
+45179,IMOB: CV9 key,
+45180,IMOB: CV10 key,
+45181,IMOB: CV11 key,
+45182,IMOB: CV12 key,
+45183,IMOB: Data delay after ignition ON,
+45184,IMOB: Keyholder standby delay,
+45185,IMOB: BLE Automatic reset,
+45186,IMOB: BLE Connection timeout,
+45187,IMOB: Automatic block after Ignition Off,
+45188,IMOB: Use CAN Odometer,
+45189,IMOB: Reverse block output,
+45190,IMOB: Special pulse type,
+45191,IMOB: Enable charging events,
+45192,IMOB: Scooter event delay,
+45193,IMOB: Minimum acceleration for scooter event,
+45194,IMOB: Require encryption,
+45195,IMOB: PC Mode,
+45196,IMOB: PC Period,
+45197,IMOB: PC Final factor,
+45198,IMOB: PC Value (RO),
+45199,IMOB: Disable Bluetooth,
+45200,IMOB: CV1 key,
+45201,IMOB: CV2 key,
+45202,IMOB: CV3 key,
+45203,IMOB: CV4 key,
+45204,IMOB: CV5 key,
+45205,IMOB: CV6 key,
+45206,IMOB: CV7 key,
+45207,IMOB: CV8 key,
+45208,IMOB: CV13 key,
+45209,IMOB: CV14 key,
+45210,IMOB: CV15 key,
+45211,IMOB: Door lock pulses,
+45212,IMOB: Door unlock pulses,
+45213,IMOB: Delay between door pulses,

@@ -1,0 +1,39 @@
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${DB_NAME:-translink_gps}
+      POSTGRES_USER: ${DB_USER:-translink}
+      POSTGRES_PASSWORD: ${DB_PASS:-translink_pass_change_me}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  web:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "${APP_PORT:-8080}:80"
+    environment:
+      DB_DRIVER: pgsql
+      DB_HOST: db
+      DB_PORT: 5432
+      DB_NAME: ${DB_NAME:-translink_gps}
+      DB_USER: ${DB_USER:-translink}
+      DB_PASS: ${DB_PASS:-translink_pass_change_me}
+      SITE_URL: ${SITE_URL:-http://localhost:8080}
+      DEBUG: ${DEBUG:-false}
+    volumes:
+      - uploads:/var/www/html/uploads
+
+volumes:
+  pgdata:
+  uploads:
+
