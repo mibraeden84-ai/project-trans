@@ -12,12 +12,11 @@ if (!isLoggedIn()) {
     exit;
 }
 
-if (canManageFiles() && empty($_SESSION['_impersonator_id'])) {
+$page = $_GET['page'] ?? 'home';
+if (canManageFiles() && empty($_SESSION['_impersonator_id']) && $page !== 'download') {
     header('Location: admin/dashboard.php');
     exit;
 }
-
-$page = $_GET['page'] ?? 'home';
 
 $pageTitle = SITE_NAME;
 
