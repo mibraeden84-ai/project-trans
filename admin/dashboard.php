@@ -649,6 +649,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_brand'])) {
     $brandId = (int)($_POST['brand_id'] ?? 0);
     $brandName = trim($_POST['brand_name'] ?? '');
     $brandColor = trim($_POST['brand_color'] ?? '#005aa0');
+    $brandDescription = trim($_POST['brand_description'] ?? '');
     $currentBrand = $brandId > 0
         ? $db->fetchOne($brandImageColumnReady ? "SELECT id, image FROM brands WHERE id = ?" : "SELECT id FROM brands WHERE id = ?", [$brandId])
         : null;
@@ -680,9 +681,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_brand'])) {
                         }
                     }
                     if ($brandImageColumnReady) {
-                        $db->query("UPDATE brands SET name = ?, slug = ?, color = ?, image = ? WHERE id = ?", [$brandName, $slug, $brandColor, $brandImagePath, $brandId]);
+                        $db->query("UPDATE brands SET name = ?, slug = ?, color = ?, description = ?, image = ? WHERE id = ?", [$brandName, $slug, $brandColor, $brandDescription ?: null, $brandImagePath, $brandId]);
                     } else {
-                        $db->query("UPDATE brands SET name = ?, slug = ?, color = ? WHERE id = ?", [$brandName, $slug, $brandColor, $brandId]);
+                        $db->query("UPDATE brands SET name = ?, slug = ?, color = ?, description = ? WHERE id = ?", [$brandName, $slug, $brandColor, $brandDescription ?: null, $brandId]);
                     }
                     setFlash("Brand updated");
                 }
@@ -814,6 +815,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_model'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_brand']) && isset($_POST['brand_name']) && $_POST['brand_name'] !== '') {
     if (!canManageBrands()) { setFlash('You don\'t have permission to create brands', 'error'); header('Location: dashboard.php#add-file'); exit; }
     $brandName = trim($_POST['brand_name']);
+    $brandDescription = trim($_POST['brand_description'] ?? '');
     $brandColor = trim($_POST['brand_color'] ?? '#005aa0');
     if ($brandName) {
         $slug = slugify($brandName);
@@ -834,12 +836,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['create_brand']) && is
                 exit;
             }
             if ($brandImageColumnReady) {
-                $newId = $db->insert("INSERT INTO brands (name, slug, color, image) VALUES (?, ?, ?, ?)", [$brandName, $slug, $brandColor, $upload['path'] ?? null]);
+                $newId = $db->insert("INSERT INTO brands (name, slug, color, description, image) VALUES (?, ?, ?, ?, ?)", [$brandName, $slug, $brandColor, $brandDescription ?: null, $upload['path'] ?? null]);
             } else {
                 if (!empty($upload['path'])) {
                     adminDeleteOwnedImage($upload['path'], ['uploads/brands/']);
                 }
-                $newId = $db->insert("INSERT INTO brands (name, slug, color) VALUES (?, ?, ?)", [$brandName, $slug, $brandColor]);
+                $newId = $db->insert("INSERT INTO brands (name, slug, color, description) VALUES (?, ?, ?, ?)", [$brandName, $slug, $brandColor, $brandDescription ?: null]);
             }
             setFlash("Brand '$brandName' created");
             header("Location: $return{$sep}created_brand=$newId$anchor");
@@ -2169,6 +2171,10 @@ if (isAdmin()) {
                                 <label>Brand Name<span class="required">*</span></label>
                                 <input type="text" name="brand_name" required>
                             </div>
+                            <div class="form-group">
+                                <label>Description</label>
+                                <textarea name="brand_description" rows="2" placeholder="Brief description of this brand..." style="resize:vertical"></textarea>
+                            </div>
                             <div class="upload-inline-row">
                                 <div class="form-group">
                                     <label>Brand Color</label>
@@ -2721,6 +2727,8 @@ if (isAdmin()) {
                         <tr class="user-row" data-user-role="<?= escape((string)$u['role']) ?>" data-user-status="<?= (int)$u['is_active'] === 1 ? 'active' : 'inactive' ?>">
                             <td>
                                 <input type="text" name="brand_name" value="<?= escape($brandRow['name']) ?>" form="<?= $brandFormId ?>" required>
+                                <br>
+                                <textarea name="brand_description" form="<?= $brandFormId ?>" rows="1" placeholder="Description..." style="width:100%;resize:vertical;margin-top:4px;font-size:0.85em"><?= escape($brandRow['description'] ?? '') ?></textarea>
                             </td>
                             <td>
                                 <div class="entity-image-cell">
