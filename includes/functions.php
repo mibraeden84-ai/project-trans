@@ -407,7 +407,13 @@ function getFileIcon($filename) {
     return $icons[$ext] ?? 'fa-file';
 }
 
-function getBrandIcon($icon, $slug = null) {
+function getBrandIcon($icon, $slug = null, $imagePath = null) {
+    if ($imagePath) {
+        $normalized = ltrim(str_replace('\\', '/', $imagePath), '/');
+        if (file_exists(__DIR__ . '/../' . $normalized)) {
+            return '<img src="' . $normalized . '" alt="' . escape($slug ?? 'brand') . '" class="brand-img-icon">';
+        }
+    }
     if ($slug) {
         $imgDir = 'assets/images/';
         $patterns = [

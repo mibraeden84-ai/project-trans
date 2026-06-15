@@ -23,7 +23,7 @@ require __DIR__ . '/../includes/header.php';
         <a href="index.php">Home</a> / <span><?= escape($brand['name']) ?></span>
     </div>
     <div class="modern-hero-main">
-        <div class="modern-hero-icon"><?= getBrandIcon($brand['icon'], $brand['slug']) ?></div>
+        <div class="modern-hero-icon"><?= getBrandIcon($brand['icon'], $brand['slug'], $brand['image'] ?? null) ?></div>
         <div class="modern-hero-copy">
             <h1><?= escape($brand['name']) ?> Device Library</h1>
             <p><?= escape($brand['description']) ?></p>
