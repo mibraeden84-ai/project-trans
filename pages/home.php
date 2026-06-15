@@ -45,6 +45,7 @@ require __DIR__ . '/../includes/header.php';
     </div>
 </section>
 
+<?php if (!empty($brands)): ?>
 <section class="brands-section">
     <div class="reveal">
         <h2 class="section-title">Select Device Brand</h2>
@@ -69,6 +70,7 @@ require __DIR__ . '/../includes/header.php';
         <?php endforeach; ?>
     </div>
 </section>
+<?php endif; ?>
 
 <section class="quick-links">
     <div class="reveal">

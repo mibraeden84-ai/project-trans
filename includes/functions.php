@@ -379,7 +379,7 @@ function redirect($url) {
 }
 
 function escape($str) {
-    return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
+    return htmlspecialchars((string)$str, ENT_QUOTES, 'UTF-8');
 }
 
 function timeAgo($datetime) {

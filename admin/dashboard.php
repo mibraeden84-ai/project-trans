@@ -847,6 +847,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_model'])) {
     $model = $db->fetchOne("SELECT id, name, image_url FROM device_models WHERE id = ?", [$modelId]);
     if ($model) {
         adminDeleteOwnedImage($model['image_url'] ?? null, ['uploads/models/']);
+        foreach (['firmware_files', 'software_files', 'manuals'] as $tbl) {
+            $orphans = $db->fetchAll("SELECT file_path FROM $tbl WHERE device_model_id = ? AND status = 'active'", [$modelId]);
+            foreach ($orphans as $o) {
+                adminDeleteUploadIfUnused($db, $o['file_path'] ?? null);
+            }
+            $db->query("UPDATE $tbl SET status = 'deleted' WHERE device_model_id = ? AND status = 'active'", [$modelId]);
+        }
         $db->query("DELETE FROM device_models WHERE id = ?", [$modelId]);
         setFlash("Deleted model " . $model['name']);
     }
