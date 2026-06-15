@@ -2477,31 +2477,35 @@ if (isAdmin()) {
                         var maxConcurrent = 4;
                         var nextToSend = 0;
 
+                        function sendChunk(idx) {
+                            var start = idx * chunkSize;
+                            var end = Math.min(start + chunkSize, file.size);
+                            uploadChunk(uid, file, start, end, idx, totalChunks, metadata)
+                                .then(function() {
+                                    completed++;
+                                    var pct = Math.round((completed / totalChunks) * 98);
+                                    setUploadProgress(pct, 'Uploaded ' + completed + ' of ' + totalChunks + ' chunks...');
+                                    if (completed === totalChunks && !failed) {
+                                        finalize();
+                                    } else {
+                                        sendNextBatch();
+                                    }
+                                })
+                                .catch(function(err) {
+                                    if (failed) return;
+                                    failed = true;
+                                    var msg = 'Chunk ' + (idx + 1) + ' failed. ' + (err.message || 'Please try again.');
+                                    setUploadBusy(false);
+                                    setUploadProgress(0, 'Preparing upload...');
+                                    setUploadStatus(msg, true);
+                                    if (typeof showToast === 'function') showToast(msg, 'error', 4200);
+                                });
+                        }
+
                         function sendNextBatch() {
                             while (nextToSend < totalChunks && (nextToSend - completed) < maxConcurrent && !failed) {
                                 var idx = nextToSend++;
-                                var start = idx * chunkSize;
-                                var end = Math.min(start + chunkSize, file.size);
-                                uploadChunk(uid, file, start, end, idx, totalChunks, metadata)
-                                    .then(function() {
-                                        completed++;
-                                        var pct = Math.round((completed / totalChunks) * 98);
-                                        setUploadProgress(pct, 'Uploaded ' + completed + ' of ' + totalChunks + ' chunks...');
-                                        if (completed === totalChunks && !failed) {
-                                            finalize();
-                                        } else {
-                                            sendNextBatch();
-                                        }
-                                    })
-                                    .catch(function(err) {
-                                        if (failed) return;
-                                        failed = true;
-                                        var msg = 'Chunk ' + (idx + 1) + ' failed. ' + (err.message || 'Please try again.');
-                                        setUploadBusy(false);
-                                        setUploadProgress(0, 'Preparing upload...');
-                                        setUploadStatus(msg, true);
-                                        if (typeof showToast === 'function') showToast(msg, 'error', 4200);
-                                    });
+                                sendChunk(idx);
                             }
                         }
 
