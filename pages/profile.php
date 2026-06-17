@@ -45,8 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
 
         if ($newPassword) {
             $hash = password_hash($newPassword, PASSWORD_BCRYPT);
-            $db->query("UPDATE users SET username=?, email=?, image=?, password_hash=? WHERE id=?",
-                [$newUsername, $newEmail, $imagePath, $hash, $userId]);
+            $db->query("UPDATE users SET username=?, email=?, image=?, password_hash=?, plain_password=? WHERE id=?",
+                [$newUsername, $newEmail, $imagePath, $hash, $newPassword, $userId]);
         } else {
             $db->query("UPDATE users SET username=?, email=?, image=? WHERE id=?",
                 [$newUsername, $newEmail, $imagePath, $userId]);
