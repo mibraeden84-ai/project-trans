@@ -118,8 +118,8 @@ if ($action === 'complete' && $_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $db = Database::getInstance();
     try {
-        $brandId = $metadata['brand_id'] !== '' ? (int)$metadata['brand_id'] : 0;
-        $modelId = $metadata['model_id'] !== '' ? (int)$metadata['model_id'] : 0;
+        $brandId = !empty($metadata['brand_id']) ? (int)$metadata['brand_id'] : null;
+        $modelId = !empty($metadata['model_id']) ? (int)$metadata['model_id'] : null;
         $dbName = $cleanName . '.' . $ext;
         $systemType = $metadata['system_type'] ?? null;
         $version = $metadata['version'] ?? '1.0';
