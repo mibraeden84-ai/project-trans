@@ -154,7 +154,13 @@ CREATE TABLE IF NOT EXISTS user_permissions (
     can_upload SMALLINT NOT NULL DEFAULT 1 CHECK (can_upload IN (0, 1)),
     can_delete SMALLINT NOT NULL DEFAULT 0 CHECK (can_delete IN (0, 1)),
     can_manage_brands SMALLINT NOT NULL DEFAULT 0 CHECK (can_manage_brands IN (0, 1)),
-    can_manage_models SMALLINT NOT NULL DEFAULT 0 CHECK (can_manage_models IN (0, 1))
+    can_manage_models SMALLINT NOT NULL DEFAULT 0 CHECK (can_manage_models IN (0, 1)),
+    can_view_configs SMALLINT NOT NULL DEFAULT 0,
+    can_view_firmware SMALLINT NOT NULL DEFAULT 0,
+    can_view_manuals SMALLINT NOT NULL DEFAULT 0,
+    can_view_software SMALLINT NOT NULL DEFAULT 0,
+    can_view_brands_models SMALLINT NOT NULL DEFAULT 0,
+    can_edit_files SMALLINT NOT NULL DEFAULT 0
 );
 
 CREATE TABLE IF NOT EXISTS activity_log (
