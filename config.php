@@ -1,4 +1,10 @@
 <?php
+ini_set('max_execution_time', 600);
+ini_set('max_input_time', 600);
+ini_set('memory_limit', '256M');
+ini_set('upload_max_filesize', '200M');
+ini_set('post_max_size', '205M');
+
 date_default_timezone_set('Africa/Addis_Ababa');
 define('DASH_TIMEZONE', 'Africa/Addis_Ababa');
 define('DASH_TIMEZONE_LABEL', 'EAT');
