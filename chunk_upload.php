@@ -10,6 +10,9 @@ if (!canManageFiles()) {
     echo json_encode(['success' => false, 'message' => 'Forbidden']);
     exit;
 }
+session_write_close();
+
+ignore_user_abort(true);
 
 $action = $_GET['action'] ?? '';
 
