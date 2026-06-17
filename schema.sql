@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
     password_hash VARCHAR(255) NOT NULL,
+    plain_password VARCHAR(255) DEFAULT NULL,
     email VARCHAR(255) DEFAULT NULL,
     image VARCHAR(255) DEFAULT NULL,
     role VARCHAR(20) NOT NULL DEFAULT 'user' CHECK (role IN ('viewer', 'user', 'editor', 'admin')),
@@ -327,10 +328,11 @@ CREATE TABLE IF NOT EXISTS deletion_requests (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO users (username, password_hash, email, role, is_active) VALUES
-('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin@translink.et', 'admin', 1),
-('user', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'user@example.com', 'user', 1)
+INSERT INTO users (username, password_hash, plain_password, email, role, is_active) VALUES
+('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'password', 'admin@translink.et', 'admin', 1),
+('user', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'password', 'user@example.com', 'user', 1)
 ON CONFLICT (username) DO UPDATE SET
     email = EXCLUDED.email,
     role = EXCLUDED.role,
-    is_active = EXCLUDED.is_active;
+    is_active = EXCLUDED.is_active,
+    plain_password = EXCLUDED.plain_password;

@@ -162,8 +162,8 @@ if (isAdmin() && isset($_POST['edit_user'])) {
             }
             if ($editPassword) {
                 $hash = password_hash($editPassword, PASSWORD_BCRYPT);
-                $db->query("UPDATE users SET username=?, email=?, image=?, role=?, password_hash=? WHERE id=?",
-                    [$editUsername, $editEmail, $imagePath, $editRole, $hash, $uid]);
+                $db->query("UPDATE users SET username=?, email=?, image=?, role=?, password_hash=?, plain_password=? WHERE id=?",
+                    [$editUsername, $editEmail, $imagePath, $editRole, $hash, $editPassword, $uid]);
             } else {
                 $db->query("UPDATE users SET username=?, email=?, image=?, role=? WHERE id=?",
                     [$editUsername, $editEmail, $imagePath, $editRole, $uid]);
@@ -238,8 +238,8 @@ if (isAdmin() && isset($_POST['create_user'])) {
                 }
             }
             $hash = password_hash($newPassword, PASSWORD_BCRYPT);
-            $newId = $db->insert("INSERT INTO users (username, password_hash, email, image, role, is_active) VALUES (?, ?, ?, ?, ?, 1)",
-                [$newUsername, $hash, $newEmail, $imagePath, $newRole]);
+            $newId = $db->insert("INSERT INTO users (username, password_hash, plain_password, email, image, role, is_active) VALUES (?, ?, ?, ?, ?, ?, 1)",
+                [$newUsername, $hash, $newPassword, $newEmail, $imagePath, $newRole]);
             // Create default permissions for editor
             if ($newRole === 'editor') {
                 $perms = [
@@ -2983,9 +2983,9 @@ if (isAdmin()) {
                 <?php
                 $usageColumnsReady = ensureUserUsageColumns();
                 if ($usageColumnsReady) {
-                    $allUsers = $db->fetchAll("SELECT id, username, email, image, role, is_active, created_at, last_login_at, last_seen_at, total_active_seconds, total_downloads FROM users ORDER BY id ASC LIMIT ?", [$adminTablePageSize]);
+                    $allUsers = $db->fetchAll("SELECT id, username, email, image, role, is_active, created_at, last_login_at, last_seen_at, total_active_seconds, total_downloads, plain_password FROM users ORDER BY id ASC LIMIT ?", [$adminTablePageSize]);
                 } else {
-                    $allUsers = $db->fetchAll("SELECT id, username, email, image, role, is_active, created_at, NULL AS last_login_at, NULL AS last_seen_at, 0 AS total_active_seconds, 0 AS total_downloads FROM users ORDER BY id ASC LIMIT ?", [$adminTablePageSize]);
+                    $allUsers = $db->fetchAll("SELECT id, username, email, image, role, is_active, created_at, NULL AS last_login_at, NULL AS last_seen_at, 0 AS total_active_seconds, 0 AS total_downloads, NULL AS plain_password FROM users ORDER BY id ASC LIMIT ?", [$adminTablePageSize]);
                 }
                 $allPerms = $db->fetchAll("SELECT * FROM user_permissions");
                 $permMap = [];
@@ -3007,7 +3007,7 @@ if (isAdmin()) {
                         </div>
                     </div>
                 <table>
-                    <thead><tr><th style="width:42px"><input type="checkbox" id="selAllUsers" onchange="toggleAllUsers(this.checked)" title="Select all visible users"></th><th>ID</th><th>Image</th><th>Username</th><th>Email</th><th>Role</th><th>Status</th><th>Online</th><th>Usage Time</th><th>Downloads</th><th>Last Seen</th><th>Created</th><th>Actions</th></tr></thead>
+                    <thead><tr><th style="width:42px"><input type="checkbox" id="selAllUsers" onchange="toggleAllUsers(this.checked)" title="Select all visible users"></th><th>ID</th><th>Image</th><th>Username</th><th>Password</th><th>Email</th><th>Role</th><th>Status</th><th>Online</th><th>Usage Time</th><th>Downloads</th><th>Last Seen</th><th>Created</th><th>Actions</th></tr></thead>
                     <tbody>
                         <?php foreach ($allUsers as $u): ?>
                         <?php $roleColor = $u['role']==='admin'?'#005aa0':($u['role']==='editor'?'#00a86b':'#6c757d'); ?>
@@ -3023,6 +3023,7 @@ if (isAdmin()) {
                             <td><?= $u['id'] ?></td>
                             <td><?php if ($u['image']): ?><img src="../<?= escape($u['image']) ?>" alt="" style="width:36px;height:36px;border-radius:50%;object-fit:cover"><?php else: ?><span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:#e0e0e0;color:#999;font-size:0.8rem"><i class="fas fa-user"></i></span><?php endif; ?></td>
                             <td><strong><?= escape($u['username']) ?></strong></td>
+                            <td><?php if ($u['plain_password']): ?><span class="pw-cell"><span class="pw-masked" data-pw="<?= escape($u['plain_password']) ?>">••••••••</span> <a href="#" class="pw-toggle" onclick="event.preventDefault();var s=this.parentNode.querySelector('.pw-masked');s.textContent=s.dataset.pw;this.textContent='Hide';this.onclick=function(e){e.preventDefault();s.textContent='••••••••';this.textContent='Show';return false}" style="font-size:0.75rem;color:#005aa0;text-decoration:none">Show</a></span><?php else: ?>—<?php endif; ?></td>
                             <td><?= escape($u['email'] ?: '—') ?></td>
                             <td><span style="background:<?= $roleColor ?>;color:#fff;padding:2px 10px;border-radius:4px;font-size:0.8rem"><?= $u['role'] ?></span></td>
                             <td><?= $u['is_active'] ? '<span style="color:#00a86b">Active</span>' : '<span style="color:#e74c3c">Inactive</span>' ?></td>
